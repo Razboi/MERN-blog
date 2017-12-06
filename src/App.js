@@ -1,5 +1,4 @@
 import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import IndexPage from "./components/pages/IndexPage";
 import NewPostPage from "./components/pages/NewPostPage";
 import PostDetails from "./components/pages/PostDetails";
@@ -18,12 +17,12 @@ componentWillUnmount() {
 }
 	render() {
 		return (
-				<MuiThemeProvider>
+				<div>
 					<NavBar />
 					<Route path="/" exact component={ IndexPage } />
 					<Route path="/new-post" exact component={ NewPostPage } />
 					<Route path="/post/:slug" component={ PostDetails } />
-				</MuiThemeProvider>
+				</div>
 		);
 	}
 };
