@@ -24,7 +24,7 @@ class Post extends React.Component {
 							<h2>{ this.props.title }</h2>
 						</Card.Header>
 						<Card.Description>
-							{this.props.content}
+							{this.props.introduction}
 						</Card.Description>
 					</Card.Content>
 				</Link>

@@ -16,13 +16,15 @@ const styles = {
 
 class PostDetails extends React.Component {
 	state = {
-		postInfo: {},
-		updater: {}
+		postInfo: {
+			title: "",
+			content: "",
+			introduction: ""
+		}
 	};
 	componentDidMount() {
 		axios.get("/api/post/" + this.props.match.params.slug ).then( ( response ) => {
 			this.setState({ postInfo: response.data });
-			this.setState({ updater: response.data });
 		}).catch( err => console.log( err ) );
 	}
 
@@ -34,14 +36,15 @@ class PostDetails extends React.Component {
 	};
 
 	onChange = (e) => {
-		this.setState({ updater: e.target.value });
+		const state = this.state.postInfo;
+		state[ e.target.name ] = e.target.value;
+		this.setState( state );
 	};
 
 	onSubmit = (e) => {
 		e.preventDefault();
-		var formData = new FormData( document.getElementById("updateForm") );
 		var updatePath = "/api/post/" + this.state.postInfo._id;
-		axios.put( updatePath, formData ).then( ( response ) => {
+		axios.put( updatePath, this.state.postInfo ).then( ( response ) => {
 			console.log("updated", response );
 		}).catch( err => console.log( err ) );
 	};
@@ -64,7 +67,17 @@ class PostDetails extends React.Component {
 							label=""
 							placeholder="Title"
 							name="title"
-							value={this.state.updater.title}
+							value={this.state.postInfo.title}
+							onChange={this.onChange}
+							style={ styles.inputs }
+						/>
+					</div>
+					<div>
+						<Form.TextArea
+							label=""
+							placeholder="Introduction"
+							name="introduction"
+							value={this.state.postInfo.introduction}
 							onChange={this.onChange}
 							style={ styles.inputs }
 						/>
@@ -74,21 +87,11 @@ class PostDetails extends React.Component {
 							label=""
 							placeholder="Content"
 							name="content"
-							value={this.state.updater.content}
+							value={this.state.postInfo.content}
 							onChange={this.onChange}
 							style={ styles.inputs }
 						/>
 					</div>
-
-					{/* <div>
-						<input
-							type="file"
-							name="image"
-							value={this.state.postInfo.image}
-							// onChange={this.onChange}
-							style={ styles.inputs }
-						/>
-					</div> */}
 					<Form.Button>Update</Form.Button>
 				</Form>
 			</div>

@@ -19,6 +19,7 @@ class NewPostPage extends React.Component {
 		super();
 		this.state = {
 			title: "",
+			introduction: "",
 			content: "",
 			image: []
 		};
@@ -39,7 +40,7 @@ class NewPostPage extends React.Component {
 	};
 
 	render() {
-		const { title, content, image } = this.state;
+		const { title, content, image, introduction } = this.state;
 		return (
 			<div>
 				<Form
@@ -61,6 +62,16 @@ class NewPostPage extends React.Component {
 					<div>
 						<Form.TextArea
 							label=""
+							placeholder="Introduction"
+							name="introduction"
+							value={introduction}
+							onChange={this.onChange}
+							style={ styles.inputs }
+						/>
+					</div>
+					<div>
+						<Form.TextArea
+							label=""
 							placeholder="Content"
 							name="content"
 							value={content}
@@ -68,7 +79,6 @@ class NewPostPage extends React.Component {
 							style={ styles.inputs }
 						/>
 					</div>
-
 					<div>
 						<input
 							type="file"

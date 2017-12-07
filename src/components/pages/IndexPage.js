@@ -32,7 +32,7 @@ class IndexPage extends React.Component {
 						<Post
 							key={post._id}
 							title={post.title}
-							content={post.content}
+							introduction={post.introduction}
 							image={post.image}
 							slug={post.slug}
 						/>
