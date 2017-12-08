@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { Button, Form, Container, Header } from "semantic-ui-react";
-import IndexHeader from "../indexHeader";
+import HeaderComponent from "../header";
 
 const styles = {
 	wrapper: {
@@ -19,13 +19,18 @@ const styles = {
 };
 
 class PostDetails extends React.Component {
-	state = {
-		postInfo: {
-			title: "",
-			content: "",
-			introduction: ""
-		}
-	};
+	constructor() {
+		super();
+		this.state = {
+			postInfo: {
+				title: "",
+				content: "",
+				introduction: "",
+				image: ""
+			}
+		};
+	}
+
 	componentDidMount() {
 		axios.get("/api/post/" + this.props.match.params.slug ).then( ( response ) => {
 			this.setState({ postInfo: response.data });
@@ -56,7 +61,12 @@ class PostDetails extends React.Component {
 	render() {
 		return (
 			<div>
-				<IndexHeader image="code-wallpaper01.jpg" />
+				{/* if there is no image state, pass a loader image to the header */}
+				{ this.state.postInfo.image ?
+					<HeaderComponent image={`uploads/${this.state.postInfo.image}`} />
+				: <HeaderComponent image="images/loader-image.png" />
+				}
+
 				<div style={ styles.wrapper }>
 					<Container>
 						<Header>{this.state.postInfo.title}</Header>

@@ -1,7 +1,7 @@
 import React from "react";
 import Post from "../post";
 import axios from "axios";
-import IndexHeader from "../indexHeader";
+import HeaderComponent from "../header";
 
 const styles = {
 	index: {
@@ -26,9 +26,10 @@ class IndexPage extends React.Component {
 	}
 
 	render() {
+
 		return (
 			<div>
-				<IndexHeader image="code-wallpaper01.jpg" />
+				<HeaderComponent image="images/code-wallpaper01.jpg" />
 				<div style={styles.index}>
 					{this.state.posts.map( post =>
 						<Post

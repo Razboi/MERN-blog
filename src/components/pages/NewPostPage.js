@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "semantic-ui-react";
 import axios from "axios";
-import IndexHeader from "../indexHeader";
+import HeaderComponent from "../header";
 
 const styles = {
 	form: {
@@ -44,7 +44,7 @@ class NewPostPage extends React.Component {
 		const { title, content, image, introduction } = this.state;
 		return (
 			<div>
-				<IndexHeader image="code-wallpaper01.jpg" />
+				<HeaderComponent image="images/code-wallpaper01.jpg" />
 				<Form
 					id="postForm"
 					encType="multipart/form-data"

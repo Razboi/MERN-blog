@@ -2,11 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import NavBar from "./navbar";
 
-const headerImage = require("../public/images/code-wallpaper01.jpg");
 const styles = {
 	header: {
 		"textAlign": "center",
-		"backgroundImage": "url(" + headerImage + ")",
 		"height": "300px",
 		"position": "relative"
 	},
@@ -21,10 +19,22 @@ const styles = {
 };
 
 
-class IndexHeader extends React.Component {
+class HeaderComponent extends React.Component {
+
 	render() {
+		// to set a dynamic image we need to tell webpack in which folder the image will be
+		const pathToImage = require.context( "../public/", true );
+		// then we can specify the image
+		var headerImage = pathToImage( "./" + this.props.image );
+		const headerStyle = {
+			backgroundImage: `url(${headerImage})`,
+			"textAlign": "center",
+			"height": "300px",
+			"position": "relative"
+		};
+
 		return (
-			<header style={styles.header}>
+			<header style={headerStyle}>
 				<div style={styles.titleWrapper}>
 					<Link to="/"><span style={styles.title}>Marc Recatala</span></Link>
 				</div>
@@ -34,4 +44,4 @@ class IndexHeader extends React.Component {
 	}
 };
 
-export default IndexHeader;
+export default HeaderComponent;
