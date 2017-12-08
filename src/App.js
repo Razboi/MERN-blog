@@ -2,7 +2,6 @@ import React from "react";
 import IndexPage from "./components/pages/IndexPage";
 import NewPostPage from "./components/pages/NewPostPage";
 import PostDetails from "./components/pages/PostDetails";
-import NavBar from "./components/navbar";
 import { Route } from "react-router-dom";
 
 
@@ -18,7 +17,6 @@ componentWillUnmount() {
 	render() {
 		return (
 				<div>
-					<NavBar />
 					<Route path="/" exact component={ IndexPage } />
 					<Route path="/new-post" exact component={ NewPostPage } />
 					<Route path="/post/:slug" component={ PostDetails } />

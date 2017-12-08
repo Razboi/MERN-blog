@@ -4,10 +4,12 @@ import {Icon} from "semantic-ui-react";
 
 const styles = {
 	navbar: {
-		"backgroundColor": "#D3D3D3",
+		"backgroundColor": "rgba(0, 0, 0, 0.5)",
 		"padding": "10px",
 		"overflow": "hidden",
-		"textAlign": "center"
+		"position": "absolute",
+		"bottom": "0px",
+		"width": "100%"
 	},
 	rightMenu: {
 		"float": "right",
@@ -15,11 +17,6 @@ const styles = {
 	},
 	buttons: {
 		"padding": "0px"
-	},
-	title: {
-		"fontSize": "22px",
-		"fontWeight": "bold",
-		"marginTop": "20px !important"
 	}
 };
 
@@ -29,7 +26,6 @@ class NavBar extends React.Component {
 	render() {
 		return (
 			<nav style={styles.navbar}>
-				<Link to="/"><span style={styles.title}>Marc's Blog</span></Link>
 				<div style={styles.rightMenu}>
 					<Link to="/">
 						<Icon name="home" size="large" />

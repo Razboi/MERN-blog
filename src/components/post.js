@@ -7,6 +7,12 @@ const styles = {
 		flex: "0 1 33%",
 		"margin": "20px 15px",
 		"backgroundColor": "#D3D3D3"
+	},
+	content: {
+		"padding": "15px"
+	},
+	description: {
+		"marginTop": "10px"
 	}
 };
 
@@ -19,11 +25,11 @@ class Post extends React.Component {
 			<Card style={ styles.post }>
 				<Link to={`/post/${this.props.slug}`}>
 					<Image src={require("../public/uploads/" + this.props.image )} />
-					<Card.Content>
+					<Card.Content style={ styles.content }>
 						<Card.Header>
 							<h2>{ this.props.title }</h2>
 						</Card.Header>
-						<Card.Description>
+						<Card.Description style={ styles.description }>
 							{this.props.introduction}
 						</Card.Description>
 					</Card.Content>

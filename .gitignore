@@ -22,3 +22,4 @@ yarn-error.log*
 
 # images
 src/public/uploads/
+src/public/images/

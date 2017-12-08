@@ -1,8 +1,12 @@
 import React from "react";
 import axios from "axios";
-import { Button, Form } from "semantic-ui-react";
+import { Button, Form, Container, Header } from "semantic-ui-react";
+import IndexHeader from "../indexHeader";
 
 const styles = {
+	wrapper: {
+		"padding": "70px 0px"
+	},
 	form: {
 		"textAlign": "center",
 		"paddingTop": "80px"
@@ -52,48 +56,53 @@ class PostDetails extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>{this.state.postInfo.title}</h1>
-				<p>{this.state.postInfo.content}</p>
-				<Button primary onClick={this.onDelete}>Delete me</Button>
+				<IndexHeader image="code-wallpaper01.jpg" />
+				<div style={ styles.wrapper }>
+					<Container>
+						<Header>{this.state.postInfo.title}</Header>
+						<p dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }} />
+						<Button primary onClick={this.onDelete}>Delete me</Button>
+					</Container>
 
-				<Form
-					id="updateForm"
-					encType="multipart/form-data"
-					style={ styles.form }
-					onSubmit={this.onSubmit}
-				>
-					<div>
-						<Form.Input
-							label=""
-							placeholder="Title"
-							name="title"
-							value={this.state.postInfo.title}
-							onChange={this.onChange}
-							style={ styles.inputs }
-						/>
-					</div>
-					<div>
-						<Form.TextArea
-							label=""
-							placeholder="Introduction"
-							name="introduction"
-							value={this.state.postInfo.introduction}
-							onChange={this.onChange}
-							style={ styles.inputs }
-						/>
-					</div>
-					<div>
-						<Form.TextArea
-							label=""
-							placeholder="Content"
-							name="content"
-							value={this.state.postInfo.content}
-							onChange={this.onChange}
-							style={ styles.inputs }
-						/>
-					</div>
-					<Form.Button>Update</Form.Button>
-				</Form>
+					<Form
+						id="updateForm"
+						encType="multipart/form-data"
+						style={ styles.form }
+						onSubmit={this.onSubmit}
+					>
+						<div>
+							<Form.Input
+								label=""
+								placeholder="Title"
+								name="title"
+								value={this.state.postInfo.title}
+								onChange={this.onChange}
+								style={ styles.inputs }
+							/>
+						</div>
+						<div>
+							<Form.TextArea
+								label=""
+								placeholder="Introduction"
+								name="introduction"
+								value={this.state.postInfo.introduction}
+								onChange={this.onChange}
+								style={ styles.inputs }
+							/>
+						</div>
+						<div>
+							<Form.TextArea
+								label=""
+								placeholder="Content"
+								name="content"
+								value={this.state.postInfo.content}
+								onChange={this.onChange}
+								style={ styles.inputs }
+							/>
+						</div>
+						<Form.Button>Update</Form.Button>
+					</Form>
+				</div>
 			</div>
 		);
 	}
