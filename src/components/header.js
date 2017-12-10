@@ -28,6 +28,8 @@ class HeaderComponent extends React.Component {
 		var headerImage = pathToImage( "./" + this.props.image );
 		const headerStyle = {
 			backgroundImage: `url(${headerImage})`,
+			"backgroundRepeat": "no-repeat",
+			"backgroundSize": "cover",
 			"textAlign": "center",
 			"height": "300px",
 			"position": "relative"

@@ -26,7 +26,8 @@ class PostDetails extends React.Component {
 				title: "",
 				content: "",
 				introduction: "",
-				image: ""
+				image: "",
+				updatedImage: []
 			}
 		};
 	}
@@ -46,19 +47,24 @@ class PostDetails extends React.Component {
 
 	onChange = (e) => {
 		const state = this.state.postInfo;
+		console.log( e.target.value );
 		state[ e.target.name ] = e.target.value;
 		this.setState( state );
+		console.log( this.state.postInfo );
 	};
 
 	onSubmit = (e) => {
 		e.preventDefault();
 		var updatePath = "/api/post/" + this.state.postInfo._id;
-		axios.put( updatePath, this.state.postInfo ).then( ( response ) => {
+		// to upload an image with multer its important to pass a formData
+		var formData = new FormData( document.getElementById("updateForm") );
+		axios.put( updatePath, formData ).then( ( response ) => {
 			console.log("updated", response );
 		}).catch( err => console.log( err ) );
 	};
 
 	render() {
+		console.log( this.state.postInfo );
 		return (
 			<div>
 				{/* if there is no image state, pass a loader image to the header */}
@@ -106,6 +112,15 @@ class PostDetails extends React.Component {
 								placeholder="Content"
 								name="content"
 								value={this.state.postInfo.content}
+								onChange={this.onChange}
+								style={ styles.inputs }
+							/>
+						</div>
+						<div>
+							<input
+								type="file"
+								label=""
+								name="updatedImage"
 								onChange={this.onChange}
 								style={ styles.inputs }
 							/>

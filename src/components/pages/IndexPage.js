@@ -9,7 +9,8 @@ const styles = {
 		display: "flex",
 		"flexWrap": "wrap",
 		"overflow": "hidden",
-		"justifyContent": "center"
+		"justifyContent": "center",
+		"backgroundColor": "#f4f2f0"
 	}
 };
 
@@ -26,19 +27,25 @@ class IndexPage extends React.Component {
 	}
 
 	render() {
-
+		// var postNumber = 0;
+		// this.state.posts.map( (post, index) => {
+		// 	console.log( index );
+		// });
 		return (
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />
 				<div style={styles.index}>
-					{this.state.posts.map( post =>
+					{this.state.posts.map( (post, index) =>
+
 						<Post
 							key={post._id}
 							title={post.title}
 							introduction={post.introduction}
 							image={post.image}
 							slug={post.slug}
+							index={index}
 						/>
+
 					)}
 				</div>
 			</div>
