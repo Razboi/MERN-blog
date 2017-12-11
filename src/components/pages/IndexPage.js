@@ -11,6 +11,12 @@ const styles = {
 		"overflow": "hidden",
 		"justifyContent": "center",
 		"backgroundColor": "#f4f2f0"
+	},
+	postsContainer: {
+		"width": "70%",
+		"display": "flex",
+		"flexWrap": "wrap",
+		"justifyContent": "center"
 	}
 };
 
@@ -35,18 +41,22 @@ class IndexPage extends React.Component {
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />
 				<div style={styles.index}>
-					{this.state.posts.map( (post, index) =>
 
-						<Post
-							key={post._id}
-							title={post.title}
-							introduction={post.introduction}
-							image={post.image}
-							slug={post.slug}
-							index={index}
-						/>
+					<div style={styles.postsContainer}>
+						{this.state.posts.map( (post, index) =>
 
-					)}
+							<Post
+								key={post._id}
+								title={post.title}
+								introduction={post.introduction}
+								image={post.image}
+								slug={post.slug}
+								index={index}
+							/>
+
+						)}
+					</div>
+
 				</div>
 			</div>
 		);

@@ -4,24 +4,43 @@ import { Card, Image, Grid } from "semantic-ui-react";
 
 const styles = {
 	evenPost: {
-		flex: "0 1 33%",
-		"margin": "20px 15px",
-		"backgroundColor": "#fff"
+		"flex": "1 1 40%",
+		"margin": "20px 15px"
 	},
 	oddPost: {
-		flex: "0 1 33%",
-		"margin": "20px 15px",
-		"backgroundColor": "red"
+		flex: "1 1 100%",
+		backgroundColor: "#fff",
+		padding: "15px",
+		margin: "20px 15px",
+		border: "1px solid #D3D3D3"
 	},
 	content: {
-		"padding": "15px"
+		padding: "15px"
 	},
 	description: {
-		"marginTop": "10px"
+		marginTop: "10px"
 	},
-	wrapper: {
-		padding: "0px",
-		margin: "0px"
+	oddDescription: {
+		marginTop: "40px"
+	},
+	card: {
+		width: "100%",
+		height: "100%"
+	},
+	image: {
+		transition: "transform 4s ease-out"
+	},
+	cardImage: {
+		height: "296px",
+		width: "100%",
+		transition: "transform 6s ease",
+		overflow: "hidden"
+	},
+	cardImageContainer: {
+		overflow: "hidden"
+	},
+	gridImage: {
+		overflow: "hidden"
 	}
 };
 
@@ -29,42 +48,93 @@ const styles = {
 on this class the props requires this. because props its no longer being passed,
 so the only way to access it is as a property of the Post object. */
 class Post extends React.Component {
-	isOdd(n) {
-		if ( ( n ) % 3 === 0 ) {
-			return true;
-		}
-		return false;
-	};
-	render() {
-		return (
-		<div style={styles.wrapper}>
-			{ this.isOdd( this.props.index ) ?
-				<Grid style={ styles.oddPost }>
-					<Grid.Column width={6}>
-						<h2>{ this.props.title }</h2>
-						{this.props.introduction}
-					</Grid.Column>
-					<Grid.Column width={4}>
-						<Image src={require("../public/uploads/" + this.props.image )} />
-					</Grid.Column>
-				</Grid>
+	constructor() {
+		super();
+		this.state = {
+			scale: 1,
+			gridShadow: null
+		};
+	}
+// used to change style states on hoverIn and hoverOut
+	onMouse = () => {
+		this.setState({
+			// if the scale is bigger than one set it to one, else augment it
+			scale: this.state.scale > 1 ? 1 : 1.3,
+			gridShadow:(
+			this.state.gridShadow ?
+			null
 			:
-			<Card style={ styles.evenPost }>
-				<Link to={`/post/${this.props.slug}`}>
-					<Image src={require("../public/uploads/" + this.props.image )} />
-					<Card.Content style={ styles.content }>
-						<Card.Header>
-							<h2>{ this.props.title }</h2>
-						</Card.Header>
-						<Card.Description style={ styles.description }>
-							{this.props.introduction}
-						</Card.Description>
-					</Card.Content>
-				</Link>
-			</Card>
-			}
+			"0px 0px 5px 1px #23769b")
+		});
+	};
 
-		</div>
+	render() {
+		var post = null;
+		var isOdd = false;
+		// if the post is a multiple of 3 (or is the first post) set post to a grid element
+		// else set the post to a card element
+		if ( ( this.props.index ) % 3 === 0 ) {
+			isOdd = true;
+			post = (
+					<Grid
+						style={{ boxShadow: this.state.gridShadow }}
+						onMouseEnter={this.onMouse}
+						onMouseLeave={this.onMouse}
+					>
+
+						<Grid.Column width={10}>
+							<Link to={`/post/${this.props.slug}`}>
+								<h2>{ this.props.title }</h2>
+							</Link>
+							<p style={ styles.oddDescription }>
+								{this.props.introduction}
+							</p>
+
+						</Grid.Column>
+						<Grid.Column style={ styles.gridImage } width={6}>
+							<Link to={`/post/${this.props.slug}`}>
+								<Image
+									style={{ ...styles.image,
+									transform: "scale(" + this.state.scale + ")" }}
+									src={require("../public/uploads/" + this.props.image )}
+								/>
+							</Link>
+						</Grid.Column>
+
+					</Grid>
+			);
+		} else {
+			post = (
+				<Card style={{ ...styles.card, boxShadow: this.state.gridShadow }}
+					onMouseEnter={this.onMouse}
+					onMouseLeave={this.onMouse}>
+					<Link to={`/post/${this.props.slug}`}>
+						<div style={styles.cardImageContainer}>
+							<Image
+								src={require("../public/uploads/" + this.props.image )}
+								style={{ ...styles.cardImage,
+								transform: "scale(" + this.state.scale + ")" }}
+							/>
+						</div>
+					</Link>
+					<Card.Content style={ styles.content }>
+						<Link to={`/post/${this.props.slug}`}>
+							<Card.Header>
+								<h2>{ this.props.title }</h2>
+							</Card.Header>
+						</Link>
+							<Card.Description style={ styles.description }>
+								{this.props.introduction}
+							</Card.Description>
+						</Card.Content>
+
+				</Card>
+			);
+		}
+		return (
+			<article style={ isOdd ? styles.oddPost : styles.evenPost }>
+				{ post }
+			</article>
 		);
 	}
 }
