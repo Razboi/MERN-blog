@@ -2,6 +2,7 @@ import React from "react";
 import IndexPage from "./components/pages/IndexPage";
 import NewPostPage from "./components/pages/NewPostPage";
 import PostDetails from "./components/pages/PostDetails";
+import LoginPage from "./components/pages/LoginPage";
 import { Route } from "react-router-dom";
 
 
@@ -20,6 +21,7 @@ componentWillUnmount() {
 					<Route path="/" exact component={ IndexPage } />
 					<Route path="/new-post" exact component={ NewPostPage } />
 					<Route path="/post/:slug" component={ PostDetails } />
+					<Route path="/login" component={ LoginPage } />
 				</div>
 		);
 	}
