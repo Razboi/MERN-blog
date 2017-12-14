@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "semantic-ui-react";
+import { Form, Message } from "semantic-ui-react";
 import axios from "axios";
 import HeaderComponent from "../header";
 
@@ -10,7 +10,6 @@ const styles = {
 		width: "50%",
 		display: "block",
 		margin: "40px auto",
-		border: "1px solid #D3D3D3",
 		borderRadius: "5px"
 	},
 	formInput: {
@@ -19,6 +18,9 @@ const styles = {
 	},
 	formButton: {
 		marginTop: "20px"
+	},
+	errorWarning: {
+		textAlign: "left"
 	}
 };
 
@@ -27,7 +29,10 @@ class LoginPage extends React.Component {
 		super();
 		this.state = {
 			username: "",
-			password: ""
+			password: "",
+			loading: false,
+			errors: false,
+			blankError: false
 		};
 	}
 
@@ -39,22 +44,54 @@ class LoginPage extends React.Component {
 
 	onSubmit = (e) => {
 		e.preventDefault();
-		axios.post("/api/auth", this.state ).then( ( response ) => {
-			console.log( response.data );
-		}).catch( err => console.log( err ) );
+		// reset errors every time the form is submitted
+		this.setState({ errors: false, blankError: false });
+		// if all fields are fulfilled make the request, else set blankError to true
+		if ( this.state.username !== "" && this.state.password !== "" ) {
+			this.setState({ loading: true });
+			axios.post("/api/auth", this.state ).then( ( response ) => {
+				this.setState({ loading: false });
+				console.log( response.data );
+				this.props.history.push("/");
+			}).catch( err => this.setState({
+				errors: true,
+				loading: false
+			}) );
+		} else {
+			this.setState({ blankError: true });
+		}
 	};
 
 	render() {
-		const { username, password } = this.state;
+		const { username, password, loading, errors, blankError } = this.state;
 		return (
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />
 				<Form
+					// error={errors}
+					error={errors || blankError}
+					loading={loading}
 					id="loginForm"
 					style={styles.form}
 					encType="multipart/form-data"
 					onSubmit={this.onSubmit}
 				>
+					{ blankError ?
+						<Message
+							style={styles.errorWarning}
+							error
+							header="Fields can't be blank"
+							content="All fields are required."
+						/>
+					:
+						<Message
+							style={styles.errorWarning}
+							error
+							header="Invalid credentials"
+							content="Please check that your credentials are correct and try again."
+						/>
+					}
+
 					<h2>Login Form</h2>
 					<div>
 						<Form.Input

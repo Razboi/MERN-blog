@@ -56,15 +56,19 @@ class Post extends React.Component {
 		};
 	}
 // used to change style states on hoverIn and hoverOut
-	onMouse = () => {
+	onMouseIn = () => {
 		this.setState({
 			// if the scale is bigger than one set it to one, else augment it
-			scale: this.state.scale > 1 ? 1 : 1.3,
-			gridShadow:(
-			this.state.gridShadow ?
-			null
-			:
-			"0px 0px 5px 1px #23769b")
+			scale: 1.3,
+			gridShadow: "0px 0px 5px 1px #23769b"
+		});
+	};
+
+	onMouseOut = () => {
+		this.setState({
+			// if the scale is bigger than one set it to one, else augment it
+			scale: 1,
+			gridShadow: null
 		});
 	};
 
@@ -78,8 +82,8 @@ class Post extends React.Component {
 			post = (
 					<Grid
 						style={{ boxShadow: this.state.gridShadow }}
-						onMouseEnter={this.onMouse}
-						onMouseLeave={this.onMouse}
+						onMouseEnter={this.onMouseIn}
+						onMouseLeave={this.onMouseOut}
 					>
 
 						<Grid.Column width={10}>
@@ -106,8 +110,8 @@ class Post extends React.Component {
 		} else {
 			post = (
 				<Card style={{ ...styles.card, boxShadow: this.state.gridShadow }}
-					onMouseEnter={this.onMouse}
-					onMouseLeave={this.onMouse}>
+					onMouseEnter={this.onMouseIn}
+					onMouseLeave={this.onMouseOut}>
 					<Link to={`/post/${this.props.slug}`}>
 						<div style={styles.cardImageContainer}>
 							<Image
