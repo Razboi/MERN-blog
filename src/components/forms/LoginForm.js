@@ -24,7 +24,7 @@ const styles = {
 	}
 };
 
-class LoginPage extends React.Component {
+class LoginForm extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -44,26 +44,6 @@ class LoginPage extends React.Component {
 		const state = this.state;
 		state[ e.target.name ] = e.target.value;
 		this.setState( state );
-	};
-
-	onSubmit = (e) => {
-		e.preventDefault();
-		// reset errors every time the form is submitted
-		this.resetErrors();
-		// if all fields are fulfilled make the request, else set blankError to true
-		if ( this.state.username !== "" && this.state.password !== "" ) {
-			this.setState({ loading: true });
-			axios.post("/api/auth", this.state ).then( ( response ) => {
-				this.setState({ loading: false });
-				console.log( response.data );
-				this.props.history.push("/");
-			}).catch( err => this.setState({
-				errors: true,
-				loading: false
-			}) );
-		} else {
-			this.setState({ blankError: true });
-		}
 	};
 
 	render() {
@@ -123,7 +103,6 @@ class LoginPage extends React.Component {
 				</div>
 		);
 	}
-
 }
 
-export default LoginPage;
+export default LoginForm;
