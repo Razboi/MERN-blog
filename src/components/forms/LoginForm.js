@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, Message } from "semantic-ui-react";
-import axios from "axios";
 import HeaderComponent from "../header";
+import PropTypes from "prop-types";
 
 const styles = {
 	form: {
@@ -28,31 +28,55 @@ class LoginForm extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			username: "",
-			password: "",
+			data: {
+				username: "",
+				password: ""
+			},
 			loading: false,
 			errors: false,
 			blankError: false
 		};
 	}
 
-	resetErrors = () => {
-		this.setState({ errors: false, blankError: false });
-	};
-
 	onChange = (e) => {
 		const state = this.state;
 		state[ e.target.name ] = e.target.value;
-		this.setState( state );
+		this.setState({
+			data: { ...this.state.data, [ e.target.name ]: e.target.value }
+		});
+	};
+
+	onSubmit = (e) => {
+		e.preventDefault();
+		// reset errors every time the form is submitted
+		const errors = this.validate();
+		// if all fields are fulfilled make the request, else set blankError to true
+		if ( !errors ) {
+			this.setState({ loading: true });
+			this.props
+			.submit( this.state.data )
+			.catch( err => this.setState({
+				errors: true,
+				loading: false
+			}) );
+		}
+	};
+
+	validate = () => {
+		// reset errors
+		this.setState({ errors: false, blankError: false });
+		if ( this.state.data.username === "" || this.state.data.password === "" ) {
+			this.setState({ blankError: true });
+			return true;
+		};
 	};
 
 	render() {
-		const { username, password, loading, errors, blankError } = this.state;
+		const { data, loading, errors, blankError } = this.state;
 		return (
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />
 				<Form
-					// error={errors}
 					error={errors || blankError}
 					loading={loading}
 					id="loginForm"
@@ -68,12 +92,12 @@ class LoginForm extends React.Component {
 							content="All fields are required."
 						/>
 					:
-						<Message
-							style={styles.errorWarning}
-							error
-							header="Invalid credentials"
-							content="Please check that your credentials are correct and try again."
-						/>
+					<Message
+						style={styles.errorWarning}
+						error
+						header="Invalid credentials"
+						content="Please check that your credentials are correct and try again."
+					/>
 					}
 
 					<h2>Login Form</h2>
@@ -83,7 +107,7 @@ class LoginForm extends React.Component {
 							label=""
 							placeholder="Username"
 							name="username"
-							value={username}
+							value={data.username}
 							onChange={this.onChange}
 						/>
 					</div>
@@ -94,7 +118,7 @@ class LoginForm extends React.Component {
 							label=""
 							placeholder="Password"
 							name="password"
-							value={password}
+							value={data.password}
 							onChange={this.onChange}
 						/>
 					</div>
@@ -104,5 +128,9 @@ class LoginForm extends React.Component {
 		);
 	}
 }
+
+LoginForm.propTypes = {
+	submit: PropTypes.func.isRequired
+};
 
 export default LoginForm;
