@@ -2,9 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Button, Container, Header } from "semantic-ui-react";
 import HeaderComponent from "../header";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import UpdateForm from "../forms/UpdateForm";
 
 const styles = {
 	wrapper: {
@@ -60,26 +58,14 @@ class PostDetails extends React.Component {
 					<Container>
 						<Header>{this.state.postInfo.title}</Header>
 						<p dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }} />
-						{ this.props.isAuthenticated &&
-							<Link to={`/update-post/${this.props.match.params.slug}`}>
-								<Button primary>Update</Button>
-							</Link>
-						}
+						<Button primary onClick={this.onDelete}>Delete me</Button>
 					</Container>
-				</div>
+
+					<UpdateForm onChange={this.onChange} postInfo={this.state.postInfo}/>
+						</div>
 			</div>
 		);
 	}
 }
 
-PostDetails.propTypes = {
-	isAuthenticated: PropTypes.bool.isRequired
-};
-
-function mapStateToProps ( state ) {
-	return {
-		isAuthenticated: !!state.user.token
-	};
-}
-
-export default connect( mapStateToProps )( PostDetails );
+export default PostDetails;
