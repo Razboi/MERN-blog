@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import {Icon} from "semantic-ui-react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logout } from "../actions/auth";
 
 const styles = {
 	navbar: {
@@ -26,17 +29,29 @@ class NavBar extends React.Component {
 	render() {
 		return (
 			<nav style={styles.navbar}>
-				<div style={styles.rightMenu}>
-					<Link to="/">
-						<Icon name="home" size="large" />
-					</Link>
-					<Link to="/new-post">
-						<Icon name="write square" size="large" />
-					</Link>
-				</div>
+				{this.props.isAuthenticated &&
+					<div style={styles.rightMenu}>
+						<Link to="/new-post">
+							<Icon name="write square" size="large" />
+						</Link>
+
+						<Icon onClick={this.props.logout} name="sign out" size="large" />
+					</div>
+				}
 			</nav>
 		);
 	}
 }
 
-export default NavBar;
+NavBar.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired,
+	logout: PropTypes.func.isRequired
+};
+
+function mapStateToProps( state ) {
+	return {
+		isAuthenticated: !!state.user.token
+	};
+}
+
+export default connect( mapStateToProps, { logout })( NavBar );

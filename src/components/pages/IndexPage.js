@@ -2,6 +2,8 @@ import React from "react";
 import Post from "../post";
 import axios from "axios";
 import HeaderComponent from "../header";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 const styles = {
 	index: {
@@ -63,4 +65,14 @@ class IndexPage extends React.Component {
 	}
 };
 
-export default IndexPage;
+IndexPage.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired
+};
+
+function mapStateToProps( state ) {
+	return {
+		isAuthenticated: !!state.user.token
+	};
+}
+
+export default connect( mapStateToProps )( IndexPage );

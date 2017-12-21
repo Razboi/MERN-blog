@@ -4,6 +4,9 @@ import NewPostPage from "./components/pages/NewPostPage";
 import PostDetails from "./components/pages/PostDetails";
 import LoginPage from "./components/pages/LoginPage";
 import { Route } from "react-router-dom";
+import UserRoute from "./components/routes/UserRoute";
+import GuestRoute from "./components/routes/GuestRoute";
+import PropTypes from "prop-types";
 
 
 // if you need to use any lifecycle events or set any state you should use class.
@@ -18,13 +21,26 @@ componentWillUnmount() {
 	render() {
 		return (
 				<div>
-					<Route path="/" exact component={ IndexPage } />
-					<Route path="/new-post" exact component={ NewPostPage } />
-					<Route path="/post/:slug" component={ PostDetails } />
-					<Route path="/login" component={ LoginPage } />
+					<Route location={this.props.location} path="/" exact component={ IndexPage } />
+					<UserRoute
+						location={this.props.location}
+						path="/new-post"
+						exact component={ NewPostPage } />
+					<Route
+						location={this.props.location}
+						path="/post/:slug"
+						component={ PostDetails } />
+					<GuestRoute
+						location={this.props.location}
+						path="/login"
+						component={ LoginPage } />
 				</div>
 		);
 	}
+};
+
+App.propTypes = {
+	location: PropTypes.object.isRequired
 };
 
 export default App;
