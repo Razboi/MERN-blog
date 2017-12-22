@@ -15,9 +15,11 @@ import PropTypes from "prop-types";
 class App extends React.Component {
 	componentWillMount() {
     document.body.style.margin = 0;
+		document.body.style.background = "#f4f2f0";
 }
 componentWillUnmount() {
     document.body.style.margin = null;
+		document.body.style.background = null;
 }
 	render() {
 		return (

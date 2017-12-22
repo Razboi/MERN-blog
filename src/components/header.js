@@ -3,18 +3,18 @@ import { Link } from "react-router-dom";
 import NavBar from "./navbar";
 
 const styles = {
-	header: {
-		"textAlign": "center",
-		"height": "300px",
-		"position": "relative"
-	},
 	titleWrapper: {
-		"paddingTop": "100px"
+		position: "relative",
+		top: "50%"
 	},
 	title: {
-		"color": "#ffffff",
-		"fontSize": "28px",
-		"fontWeight": "bold"
+		"color": "#fff",
+		"fontSize": "30px",
+		"fontWeight": "bold",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		padding: "3px 30px",
+		borderRadius: "0px",
+		border: "1px solid #fff"
 	}
 };
 
@@ -31,7 +31,7 @@ class HeaderComponent extends React.Component {
 			"backgroundRepeat": "no-repeat",
 			"backgroundSize": "cover",
 			"textAlign": "center",
-			"height": "300px",
+			"height": this.props.postDetails ? "550px" : "300px",
 			"position": "relative"
 		};
 
@@ -40,7 +40,10 @@ class HeaderComponent extends React.Component {
 				<div style={styles.titleWrapper}>
 					<Link to="/"><span style={styles.title}>Marc Recatala</span></Link>
 				</div>
-				<NavBar style={styles.navbar} />
+				<NavBar
+					details={this.props.postDetails ? true : false}
+					style={styles.navbar}
+				/>
 			</header>
 		);
 	}

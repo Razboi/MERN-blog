@@ -11,7 +11,7 @@ const styles = {
 		"padding": "10px",
 		"overflow": "hidden",
 		"position": "absolute",
-		"bottom": "0px",
+		bottom: "150px",
 		"width": "100%"
 	},
 	rightMenu: {
@@ -19,7 +19,7 @@ const styles = {
 		"top": "0px"
 	},
 	buttons: {
-		"padding": "0px"
+		color: "#23769b"
 	}
 };
 
@@ -28,14 +28,23 @@ class NavBar extends React.Component {
 
 	render() {
 		return (
-			<nav style={styles.navbar}>
+			<nav style={ this.props.details ?
+				{ ...styles.navbar, bottom: "150px" }
+			:
+			{ ...styles.navbar, bottom: "0px" }
+			}>
 				{this.props.isAuthenticated &&
 					<div style={styles.rightMenu}>
 						<Link to="/new-post">
-							<Icon name="write square" size="large" />
+							<Icon style={styles.buttons} name="write square" size="large" />
 						</Link>
 
-						<Icon onClick={this.props.logout} name="sign out" size="large" />
+						<Icon
+							style={styles.buttons}
+							onClick={this.props.logout}
+							name="sign out"
+							size="large"
+						/>
 					</div>
 				}
 			</nav>

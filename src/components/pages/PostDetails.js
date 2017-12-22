@@ -8,7 +8,25 @@ import PropTypes from "prop-types";
 
 const styles = {
 	wrapper: {
-		"padding": "70px 0px"
+		fontSize: "18px",
+		textAlign: "justify",
+		"background": "transparent",
+		position: "relative",
+		top: "-150px"
+	},
+	container: {
+		padding: "70px 100px",
+		width: "50em",
+		"background": "#fff",
+		borderRadius: "5px"
+	},
+	content: {
+		marginTop: "70px"
+	},
+	title: {
+		fontSize: "32px",
+		textAlign: "center",
+		color: "#23769b"
 	}
 };
 
@@ -52,14 +70,20 @@ class PostDetails extends React.Component {
 			<div>
 				{/* if there is no image state, pass a loader image to the header */}
 				{ this.state.postInfo.image ?
-					<HeaderComponent image={`uploads/${this.state.postInfo.image}`} />
-				: <HeaderComponent image="images/loader-image.png" />
+					<HeaderComponent
+						postDetails={true}
+						image={`uploads/${this.state.postInfo.image}`}
+					/>
+				: <HeaderComponent postDetails={true} image="images/loader-image.png" />
 				}
 
 				<div style={ styles.wrapper }>
-					<Container>
-						<Header>{this.state.postInfo.title}</Header>
-						<p dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }} />
+					<Container style={ styles.container }>
+						<Header style={ styles.title }>{this.state.postInfo.title}</Header>
+						<p
+							dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
+							style={ styles.content }
+						/>
 						{ this.props.isAuthenticated &&
 							<Link to={`/update-post/${this.props.match.params.slug}`}>
 								<Button primary>Update</Button>
