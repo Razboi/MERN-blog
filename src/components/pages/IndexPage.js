@@ -35,10 +35,6 @@ class IndexPage extends React.Component {
 	}
 
 	render() {
-		// var postNumber = 0;
-		// this.state.posts.map( (post, index) => {
-		// 	console.log( index );
-		// });
 		return (
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />

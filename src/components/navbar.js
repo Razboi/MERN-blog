@@ -7,19 +7,28 @@ import { logout } from "../actions/auth";
 
 const styles = {
 	navbar: {
-		"backgroundColor": "rgba(0, 0, 0, 0.5)",
+		"backgroundColor": "rgba(0, 0, 0, 0.7)",
 		"padding": "10px",
 		"overflow": "hidden",
 		"position": "absolute",
-		bottom: "150px",
 		"width": "100%"
 	},
 	rightMenu: {
 		"float": "right",
-		"top": "0px"
+		marginRight: "25px"
+	},
+	leftMenu: {
+		"float": "left"
+	},
+	categories: {
+		color: "#fff",
+		marginLeft: "25px",
+		fontSize: "18px",
+		fontWeight: "bold"
 	},
 	buttons: {
-		color: "#23769b"
+		color: "#fff",
+		marginRight: "8px"
 	}
 };
 
@@ -33,10 +42,31 @@ class NavBar extends React.Component {
 			:
 			{ ...styles.navbar, bottom: "0px" }
 			}>
+				<div style={styles.leftMenu}>
+					<Link style={styles.categories} to="/" >
+						Pentesting
+					</Link>
+					<Link style={styles.categories} to="/" >
+						Linux
+					</Link>
+					<Link style={styles.categories} to="/" >
+						Programming
+					</Link>
+					<Link style={styles.categories} to="/" >
+						Raspberry Pi
+					</Link>
+				</div>
+				<div style={styles.rightMenu}>
+					<Icon
+						style={styles.buttons}
+						name="search"
+						size="large"
+					/>
+				</div>
 				{this.props.isAuthenticated &&
 					<div style={styles.rightMenu}>
-						<Link to="/new-post">
-							<Icon style={styles.buttons} name="write square" size="large" />
+						<Link style={styles.buttons} to="/new-post">
+							<Icon name="write square" size="large" />
 						</Link>
 
 						<Icon

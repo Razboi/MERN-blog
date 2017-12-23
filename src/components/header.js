@@ -11,7 +11,7 @@ const styles = {
 		"color": "#fff",
 		"fontSize": "30px",
 		"fontWeight": "bold",
-		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		backgroundColor: "rgba(0, 0, 0, 0.7)",
 		padding: "3px 30px",
 		borderRadius: "0px",
 		border: "1px solid #fff"
