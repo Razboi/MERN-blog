@@ -4,6 +4,7 @@ import {Icon} from "semantic-ui-react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
+import axios from "axios";
 
 const styles = {
 	navbar: {
@@ -26,14 +27,47 @@ const styles = {
 		fontSize: "18px",
 		fontWeight: "bold"
 	},
+	search: {
+		background: "transparent",
+		border: "none",
+		borderBottom: "1px solid #fff",
+		color: "#fff",
+		padding: "5px"
+	},
 	buttons: {
 		color: "#fff",
 		marginRight: "8px"
 	}
 };
 
-
 class NavBar extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			search: ""
+		};
+	}
+
+	onSubmit = (e) => {
+		e.preventDefault();
+		if ( this.state.search === "") {
+			this.props.clearSearch();
+		} else {
+			axios.get("/api/search/" + this.state.search ).then( (res) => {
+				this.props.renderSearch( res.data );
+				console.log( res );
+			}).catch( (err) => {
+				console.log( err );
+			});
+		}
+	};
+
+	onChange = (e) => {
+		const state = this.state;
+		state[ e.target.name ] = e.target.value;
+		this.setState( state );
+		console.log( this.state );
+	};
 
 	render() {
 		return (
@@ -57,11 +91,23 @@ class NavBar extends React.Component {
 					</Link>
 				</div>
 				<div style={styles.rightMenu}>
-					<Icon
-						style={styles.buttons}
-						name="search"
-						size="large"
-					/>
+					<form onSubmit={this.onSubmit}>
+						<input
+							style={styles.search}
+							type="text"
+							placeholder="Search"
+							name="search"
+							value={this.state.search}
+							onChange={this.onChange}
+						/>
+						<Icon
+							onClick={this.onSubmit}
+							style={styles.buttons}
+							name="search"
+							size="large"
+						/>
+					</form>
+
 				</div>
 				{this.props.isAuthenticated &&
 					<div style={styles.rightMenu}>

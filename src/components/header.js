@@ -41,6 +41,8 @@ class HeaderComponent extends React.Component {
 					<Link to="/"><span style={styles.title}>Marc Recatala</span></Link>
 				</div>
 				<NavBar
+					renderSearch={this.props.renderSearch}
+					clearSearch={this.props.clearSearch}
 					details={this.props.postDetails ? true : false}
 					style={styles.navbar}
 				/>
