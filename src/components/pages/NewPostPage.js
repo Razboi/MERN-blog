@@ -22,7 +22,8 @@ class NewPostPage extends React.Component {
 			title: "",
 			introduction: "",
 			content: "",
-			image: []
+			image: [],
+			categories: ""
 		};
 	}
 
@@ -41,7 +42,7 @@ class NewPostPage extends React.Component {
 	};
 
 	render() {
-		const { title, content, image, introduction } = this.state;
+		const { title, content, image, introduction, categories } = this.state;
 		return (
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />
@@ -57,6 +58,16 @@ class NewPostPage extends React.Component {
 							placeholder="Title"
 							name="title"
 							value={title}
+							onChange={this.onChange}
+							style={ styles.inputs }
+						/>
+					</div>
+					<div>
+						<Form.Input
+							label=""
+							placeholder="Categories"
+							name="categories"
+							value={categories}
 							onChange={this.onChange}
 							style={ styles.inputs }
 						/>

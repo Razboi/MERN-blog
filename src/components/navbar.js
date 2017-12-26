@@ -69,6 +69,15 @@ class NavBar extends React.Component {
 		console.log( this.state );
 	};
 
+	filterCategory = (category) => {
+		var route = "/api/category/" + category;
+		axios.get( route ).then( (res) => {
+			this.props.renderSearch( res.data );
+		}).catch( (err) => {
+			console.log( err );
+		});
+	};
+
 	render() {
 		return (
 			<nav style={ this.props.details ?
@@ -77,16 +86,32 @@ class NavBar extends React.Component {
 			{ ...styles.navbar, bottom: "0px" }
 			}>
 				<div style={styles.leftMenu}>
-					<Link style={styles.categories} to="/" >
+					<Link
+						style={styles.categories}
+						onClick={() => this.filterCategory( "pentesting" )}
+						to="/"
+					>
 						Pentesting
 					</Link>
-					<Link style={styles.categories} to="/" >
+					<Link
+						style={styles.categories}
+						onClick={() => this.filterCategory( "linux" )}
+						to="/"
+					>
 						Linux
 					</Link>
-					<Link style={styles.categories} to="/" >
+					<Link
+						style={styles.categories}
+						onClick={() => this.filterCategory( "programming" )}
+						to="/"
+					>
 						Programming
 					</Link>
-					<Link style={styles.categories} to="/" >
+					<Link
+						style={styles.categories}
+						onClick={() => this.filterCategory( "raspberry" )}
+						to="/"
+					>
 						Raspberry Pi
 					</Link>
 				</div>

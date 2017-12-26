@@ -44,7 +44,7 @@ class IndexPage extends React.Component {
 
 	clearSearch = () => {
 		this.setState({ searchPosts: "" });
-		console.log( this.state.searchPosts );
+		console.log( this.state );
 	};
 
 	render() {

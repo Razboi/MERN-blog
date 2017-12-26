@@ -38,7 +38,11 @@ class HeaderComponent extends React.Component {
 		return (
 			<header style={headerStyle}>
 				<div style={styles.titleWrapper}>
-					<Link to="/"><span style={styles.title}>Marc Recatala</span></Link>
+					<Link to="/">
+						<span style={styles.title}>
+							<span>&lt;</span> Marc Recatala <span>/&gt;</span>
+						</span>
+					</Link>
 				</div>
 				<NavBar
 					renderSearch={this.props.renderSearch}
