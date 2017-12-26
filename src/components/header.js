@@ -45,6 +45,7 @@ class HeaderComponent extends React.Component {
 					</Link>
 				</div>
 				<NavBar
+					search={this.props.search}
 					renderSearch={this.props.renderSearch}
 					clearSearch={this.props.clearSearch}
 					details={this.props.postDetails ? true : false}

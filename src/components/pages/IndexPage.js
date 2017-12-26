@@ -4,6 +4,7 @@ import axios from "axios";
 import HeaderComponent from "../header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import {Icon} from "semantic-ui-react";
 
 const styles = {
 	index: {
@@ -12,13 +13,28 @@ const styles = {
 		"flexWrap": "wrap",
 		"overflow": "hidden",
 		"justifyContent": "center",
-		"backgroundColor": "#f4f2f0"
+		"backgroundColor": "#f4f2f0",
+		position: "relative"
 	},
 	postsContainer: {
 		"width": "70%",
 		"display": "flex",
 		"flexWrap": "wrap",
 		"justifyContent": "center"
+	},
+	categoryLabel: {
+		background: "#000",
+		position: "absolute",
+		top: "10px",
+		left: "45px",
+		padding: "3px 10px",
+		color: "#fff"
+	},
+	labelIcon: {
+		fontSize: "15px",
+		color: "#fff",
+		margin: "0px",
+		marginLeft: "4px"
 	}
 };
 
@@ -26,36 +42,66 @@ const styles = {
 // if you need to use any lifecycle events or set any state you should use class.
 // Otherwise a function can be used for a simpler syntax
 class IndexPage extends React.Component {
-	state = {
+	constructor() {
+		super();
+		this.state = {
 		posts: [],
-		searchPosts: []
+		searchPosts: [],
+		category: "",
+		search: ""
 	};
+	}
 
 	componentDidMount() {
+		if ( this.props.location.state && this.props.location.state.searchPosts !== undefined ) {
+			this.setState({
+				searchPosts: this.props.location.state.searchPosts,
+				search: this.props.location.state.search
+			});
+			this.props.history.replace({ state: {} });
+		}
+
 		axios.get("/api/posts").then( ( response ) => {
 			this.setState({ posts: response.data });
 		}).catch( err => console.log( err ) );
 	}
 
-	renderSearch = (posts) => {
-		this.setState({ searchPosts: posts });
-		console.log( this.state.searchPosts );
+	renderSearch = (posts, category) => {
+		this.setState({ searchPosts: posts, category: category });
+		console.log( this.state );
 	};
 
 	clearSearch = () => {
-		this.setState({ searchPosts: "" });
+		this.setState({ searchPosts: "", category: "" });
 		console.log( this.state );
 	};
 
 	render() {
+		console.log(this.state);
 		return (
 			<div>
+				{this.state.search !== "" ?
+					<HeaderComponent
+						search={this.state.search}
+						renderSearch={this.renderSearch}
+						clearSearch={this.clearSearch}
+						image="images/code-wallpaper01.jpg"
+					/>
+				:
 				<HeaderComponent
 					renderSearch={this.renderSearch}
 					clearSearch={this.clearSearch}
 					image="images/code-wallpaper01.jpg"
 				/>
+				}
+
 				<div style={styles.index}>
+					{ this.state.category &&
+						<span style={styles.categoryLabel} onClick={this.clearSearch}>
+							{this.state.category}
+							<Icon style={styles.labelIcon} name="close" size="large" />
+						</span>
+					}
 
 					<div style={styles.postsContainer}>
 						{this.state.searchPosts.length > 0 ?

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 import axios from "axios";
+import { withRouter } from "react-router-dom";
 
 const styles = {
 	navbar: {
@@ -47,6 +48,12 @@ class NavBar extends React.Component {
 			search: ""
 		};
 	}
+	componentDidMount() {
+		if (this.props.search) {
+			this.setState({ search: this.props.search });
+		}
+		console.log(this.state);
+	}
 
 	onSubmit = (e) => {
 		e.preventDefault();
@@ -54,7 +61,16 @@ class NavBar extends React.Component {
 			this.props.clearSearch();
 		} else {
 			axios.get("/api/search/" + this.state.search ).then( (res) => {
-				this.props.renderSearch( res.data );
+				this.props.renderSearch ?
+				this.props.renderSearch( res.data )
+				:
+				this.props.history.push({
+					pathname: "/",
+					state: {
+						searchPosts: res.data,
+						search: this.state.search
+					 }
+				});
 				console.log( res );
 			}).catch( (err) => {
 				console.log( err );
@@ -70,9 +86,10 @@ class NavBar extends React.Component {
 	};
 
 	filterCategory = (category) => {
+		this.setState({ search: "" });
 		var route = "/api/category/" + category;
 		axios.get( route ).then( (res) => {
-			this.props.renderSearch( res.data );
+			this.props.renderSearch( res.data, category );
 		}).catch( (err) => {
 			console.log( err );
 		});
@@ -155,7 +172,10 @@ class NavBar extends React.Component {
 
 NavBar.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
-	logout: PropTypes.func.isRequired
+	logout: PropTypes.func.isRequired,
+	history: PropTypes.shape({
+		push: PropTypes.func.isRequired
+	}).isRequired
 };
 
 function mapStateToProps( state ) {
@@ -164,4 +184,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default connect( mapStateToProps, { logout })( NavBar );
+export default withRouter( connect( mapStateToProps, { logout })( NavBar ) );
