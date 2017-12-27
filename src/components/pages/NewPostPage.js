@@ -23,7 +23,8 @@ class NewPostPage extends React.Component {
 			introduction: "",
 			content: "",
 			image: [],
-			categories: ""
+			categories: "",
+			keywords: ""
 		};
 	}
 
@@ -42,7 +43,7 @@ class NewPostPage extends React.Component {
 	};
 
 	render() {
-		const { title, content, image, introduction, categories } = this.state;
+		const { title, content, image, introduction, categories, keywords } = this.state;
 		return (
 			<div>
 				<HeaderComponent image="images/code-wallpaper01.jpg" />
@@ -68,6 +69,16 @@ class NewPostPage extends React.Component {
 							placeholder="Categories"
 							name="categories"
 							value={categories}
+							onChange={this.onChange}
+							style={ styles.inputs }
+						/>
+					</div>
+					<div>
+						<Form.Input
+							label=""
+							placeholder="Search keywords separated by commas"
+							name="keywords"
+							value={keywords}
 							onChange={this.onChange}
 							style={ styles.inputs }
 						/>

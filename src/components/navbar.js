@@ -26,7 +26,8 @@ const styles = {
 		color: "#fff",
 		marginLeft: "25px",
 		fontSize: "18px",
-		fontWeight: "bold"
+		fontWeight: "bold",
+		cursor: "pointer"
 	},
 	search: {
 		background: "transparent",
@@ -48,11 +49,10 @@ class NavBar extends React.Component {
 			search: ""
 		};
 	}
-	componentDidMount() {
-		if (this.props.search) {
+	componentWillMount() {
+		if ( this.props.search ) {
 			this.setState({ search: this.props.search });
 		}
-		console.log(this.state);
 	}
 
 	onSubmit = (e) => {
@@ -89,7 +89,16 @@ class NavBar extends React.Component {
 		this.setState({ search: "" });
 		var route = "/api/category/" + category;
 		axios.get( route ).then( (res) => {
-			this.props.renderSearch( res.data, category );
+			this.props.renderSearch ?
+			this.props.renderSearch( res.data, category )
+			:
+			this.props.history.push({
+				pathname: "/",
+				state: {
+					searchPosts: res.data,
+					category: category
+				 }
+			});
 		}).catch( (err) => {
 			console.log( err );
 		});
@@ -103,34 +112,30 @@ class NavBar extends React.Component {
 			{ ...styles.navbar, bottom: "0px" }
 			}>
 				<div style={styles.leftMenu}>
-					<Link
+					<span
 						style={styles.categories}
 						onClick={() => this.filterCategory( "pentesting" )}
-						to="/"
 					>
 						Pentesting
-					</Link>
-					<Link
+					</span>
+					<span
 						style={styles.categories}
 						onClick={() => this.filterCategory( "linux" )}
-						to="/"
 					>
 						Linux
-					</Link>
-					<Link
+					</span>
+					<span
 						style={styles.categories}
 						onClick={() => this.filterCategory( "programming" )}
-						to="/"
 					>
 						Programming
-					</Link>
-					<Link
+					</span>
+					<span
 						style={styles.categories}
 						onClick={() => this.filterCategory( "raspberry" )}
-						to="/"
 					>
 						Raspberry Pi
-					</Link>
+					</span>
 				</div>
 				<div style={styles.rightMenu}>
 					<form onSubmit={this.onSubmit}>
