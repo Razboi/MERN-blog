@@ -49,9 +49,16 @@ class IndexPage extends React.Component {
 		posts: [],
 		searchPosts: [],
 		category: "",
-		search: ""
+		search: "",
+		pageNum: 1
 	};
 	}
+
+	getPosts = () => {
+		axios.get("/api/posts/" + this.state.pageNum ).then( ( response ) => {
+			this.setState({ posts: response.data });
+		}).catch( err => console.log( err ) );
+	};
 
 	componentWillMount() {
 		if ( this.props.location.state ) {
@@ -69,10 +76,13 @@ class IndexPage extends React.Component {
 			this.props.history.replace({ state: {} });
 		}
 
-		axios.get("/api/posts").then( ( response ) => {
-			this.setState({ posts: response.data });
-		}).catch( err => console.log( err ) );
+		this.getPosts();
+	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if ( this.state.pageNum !== prevState.pageNum ) {
+			this.getPosts();
+		}
 	}
 
 	renderSearch = (posts, category) => {
@@ -81,6 +91,16 @@ class IndexPage extends React.Component {
 
 	clearSearch = () => {
 		this.setState({ searchPosts: "", category: "" });
+	};
+
+	nextPage = () => {
+		this.setState({ pageNum: this.state.pageNum + 1 });
+	};
+
+	prevPage = () => {
+		if ( this.state.pageNum > 1 ) {
+			this.setState({ pageNum: this.state.pageNum - 1 });
+		}
 	};
 
 	render() {
@@ -132,6 +152,9 @@ class IndexPage extends React.Component {
 					</div>
 
 				</div>
+				<button onClick={this.nextPage}>Next Page</button>
+				<button onClick={this.prevPage}>Previous Page</button>
+				<span>{this.state.pageNum}</span>
 			</div>
 		);
 	}
