@@ -70,14 +70,29 @@ class IndexPage extends React.Component {
 // function for requesting all the posts (in limit) passing the current pageNum
 // to calculate the number of posts to skip
 	getPosts = () => {
-		axios.get("/api/posts/" + this.state.pageNum ).then( ( response ) => {
+		axios.get( `/api/posts/${this.state.pageNum}` ).then( ( response ) => {
 			this.setState({ posts: response.data });
 		}).catch( err => console.log( err ) );
+		console.log("posts");
+	};
+
+	getSearchPosts = () => {
+		if ( this.state.search ) {
+			axios.get( `/api/search/${this.state.search}/${this.state.pageNum}` )
+			.then( ( response ) => {
+				this.setState({ searchPosts: response.data });
+			}).catch( err => console.log( err ) );
+		} else {
+			axios.get( `/api/category/${this.state.category}/${this.state.pageNum}` )
+			.then( ( response ) => {
+				this.setState({ searchPosts: response.data });
+			}).catch( err => console.log( err ) );
+		}
 	};
 
 // get the count of all the posts and set maxPages
 	getTotalPosts = () => {
-		axios.get("/api/count/" ).then( ( response ) => {
+		axios.get("/api/count/posts" ).then( ( response ) => {
 			// the number of pages is the number of posts divided posts per page
 			this.setState({ maxPages: Math.ceil( response.data[ 0 ] / 7 ) });
 		}).catch( err => console.log( err ) );
@@ -85,40 +100,49 @@ class IndexPage extends React.Component {
 
 // before mounting get the location state, posts and posts count
 	componentWillMount() {
-		if ( this.props.location.state ) {
-			if ( this.props.location.state.searchPosts ) {
-				this.setState({
-					searchPosts: this.props.location.state.searchPosts,
-					search: this.props.location.state.search
-				});
-			}
-			if ( this.props.location.state.category ) {
-				this.setState({
-					category: this.props.location.state.category
-				});
-			}
+		if ( !this.props.location.state || !this.props.location.state.searchPosts ) {
+			this.getTotalPosts();
+			this.getPosts();
+		} else {
+			this.setState({
+				searchPosts: this.props.location.state.searchPosts,
+				search: this.props.location.state.search,
+				maxPages: Math.ceil( this.props.location.state.count / 7 ),
+				category: this.props.location.state.category
+			});
 			this.props.history.replace({ state: {} });
 		}
-
-		this.getPosts();
-		this.getTotalPosts();
 	}
 
 // every time the component updates if the page number has changed we get the new posts
 	componentDidUpdate(prevProps, prevState) {
 		if ( this.state.pageNum !== prevState.pageNum ) {
-			this.getPosts();
+			// if there's a search get more searched posts, else get more posts
+			this.state.searchPosts.length > 0 ? this.getSearchPosts() : this.getPosts();
 		}
 	}
 
 // set the search results as searchPosts
-	renderSearch = (posts, category) => {
-		this.setState({ searchPosts: posts, category: category });
+	renderSearch = (posts, category, count, search) => {
+		this.clearState();
+		this.setState({
+			searchPosts: posts,
+			category: category,
+			maxPages: Math.ceil( count / 7 ),
+			search: search
+		});
 	};
 
-// clear search results and category filter
+// clear searchPosts, category and pageNum
+	clearState = () => {
+		this.setState({ searchPosts: "", category: "", pageNum: 1 });
+	};
+
+// clear search results and get posts count/maxPage
 	clearSearch = () => {
-		this.setState({ searchPosts: "", category: "" });
+		this.clearState();
+		this.getTotalPosts();
+		this.getPosts();
 	};
 
 // if the current page is smaller than the maximum pages increment the page number

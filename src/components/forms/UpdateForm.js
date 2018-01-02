@@ -45,6 +45,26 @@ class UpdateForm extends React.Component {
 						/>
 					</div>
 					<div>
+						<Form.Input
+							label=""
+							placeholder="Categories"
+							name="categories"
+							value={this.props.postInfo.categories}
+							onChange={this.props.onChange}
+							style={ styles.inputs }
+						/>
+					</div>
+					<div>
+						<Form.Input
+							label=""
+							placeholder="Search keywords separated by commas"
+							name="keywords"
+							value={this.props.postInfo.keywords}
+							onChange={this.props.onChange}
+							style={ styles.inputs }
+						/>
+					</div>
+					<div>
 						<Form.TextArea
 							label=""
 							placeholder="Introduction"

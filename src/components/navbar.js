@@ -46,7 +46,8 @@ class NavBar extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			search: ""
+			search: "",
+			count: undefined
 		};
 	}
 	componentWillMount() {
@@ -60,18 +61,21 @@ class NavBar extends React.Component {
 		if ( this.state.search === "") {
 			this.props.clearSearch();
 		} else {
-			axios.get("/api/search/" + this.state.search ).then( (res) => {
+			axios.get("/api/count/search/" + this.state.search ).then( ( response ) => {
+				this.setState({ count: response.data[ 0 ] });
+			}).catch( err => console.log( err ) );
+			axios.get( `/api/search/${this.state.search}/1` ).then( (res) => {
 				this.props.renderSearch ?
-				this.props.renderSearch( res.data )
+				this.props.renderSearch( res.data, undefined, this.state.count, this.state.search )
 				:
 				this.props.history.push({
 					pathname: "/",
 					state: {
 						searchPosts: res.data,
-						search: this.state.search
+						search: this.state.search,
+						count: this.state.count
 					 }
 				});
-				console.log( res );
 			}).catch( (err) => {
 				console.log( err );
 			});
@@ -87,16 +91,20 @@ class NavBar extends React.Component {
 
 	filterCategory = (category) => {
 		this.setState({ search: "" });
-		var route = "/api/category/" + category;
-		axios.get( route ).then( (res) => {
+		axios.get( `/api/count/category/${category}` ).then( ( response ) => {
+			this.setState({ count: response.data[ 0 ] });
+			console.log( response.data[ 0 ] );
+		}).catch( err => console.log( err ) );
+		axios.get( `/api/category/${category}/1` ).then( (res) => {
 			this.props.renderSearch ?
-			this.props.renderSearch( res.data, category )
+			this.props.renderSearch( res.data, category, this.state.count )
 			:
 			this.props.history.push({
 				pathname: "/",
 				state: {
 					searchPosts: res.data,
-					category: category
+					category: category,
+					count: this.state.count
 				 }
 			});
 		}).catch( (err) => {
