@@ -31,7 +31,7 @@ class HeaderComponent extends React.Component {
 			"backgroundRepeat": "no-repeat",
 			"backgroundSize": "cover",
 			"textAlign": "center",
-			"height": this.props.postDetails ? "550px" : "300px",
+			"height": this.props.postDetails ? "500px" : "300px",
 			"position": "relative"
 		};
 

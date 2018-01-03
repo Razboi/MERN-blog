@@ -115,7 +115,7 @@ class NavBar extends React.Component {
 	render() {
 		return (
 			<nav style={ this.props.details ?
-				{ ...styles.navbar, bottom: "150px" }
+				{ ...styles.navbar, bottom: "0px" }
 			:
 			{ ...styles.navbar, bottom: "0px" }
 			}>

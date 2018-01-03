@@ -12,13 +12,15 @@ const styles = {
 		textAlign: "justify",
 		"background": "transparent",
 		position: "relative",
-		top: "-150px"
+		top: "0px",
+		paddingBottom: "70px"
 	},
 	container: {
 		padding: "70px 100px",
 		width: "50em",
 		"background": "#fff",
-		borderRadius: "5px"
+		borderRadius: "0px",
+		border: "1px solid #D3D3D3"
 	},
 	content: {
 		marginTop: "70px"
@@ -27,6 +29,16 @@ const styles = {
 		fontSize: "32px",
 		textAlign: "center",
 		color: "#23769b"
+	},
+	related: {
+		background: "#fff",
+		border: "1px solid #D3D3D3",
+		padding: "10px",
+		marginTop: "50px"
+	},
+	relatedImages: {
+		height: "280px",
+		width: "380px"
 	}
 };
 
@@ -34,36 +46,30 @@ class PostDetails extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			postInfo: {
-				title: "",
-				content: "",
-				introduction: "",
-				image: "",
-				updatedImage: []
-			}
+			postInfo: {},
+			relatedImage: ""
 		};
 	}
 
-	componentDidMount() {
+	getRelated = () => {
+		var categories = this.state.postInfo.categories;
+		axios.get( `/api/category/${categories}/1` )
+		.then( ( response ) => {
+			this.setState({ relatedImage: response.data[ 0 ].image });
+		}).catch( err => console.log( err ) );
+	};
+
+	componentWillMount() {
 		axios.get("/api/post/" + this.props.match.params.slug ).then( ( response ) => {
 			this.setState({ postInfo: response.data });
 		}).catch( err => console.log( err ) );
 	}
 
-	onDelete = (e) => {
-		e.preventDefault();
-		axios.delete("/api/post/" + this.state.postInfo._id ).then( ( response ) => {
-			console.log("deleted", response );
-		}).catch( err => console.log( err ) );
-	};
-
-	onChange = (e) => {
-		const state = this.state.postInfo;
-		console.log( e.target.value );
-		state[ e.target.name ] = e.target.value;
-		this.setState( state );
-		console.log( this.state.postInfo );
-	};
+	componentDidUpdate(prevProps, prevState) {
+		if ( prevState.postInfo.categories !== this.state.postInfo.categories ) {
+			this.getRelated();
+		}
+	}
 
 	render() {
 		return (
@@ -90,7 +96,18 @@ class PostDetails extends React.Component {
 							</Link>
 						}
 					</Container>
+					<Container style={ styles.related }>
+						{this.state.relatedImage &&
+							<img
+								style={ styles.relatedImages }
+								src={require("../../public/uploads/" + this.state.relatedImage )}
+								alt="Related post"
+							/>
+						}
+					</Container>
 				</div>
+
+
 			</div>
 		);
 	}

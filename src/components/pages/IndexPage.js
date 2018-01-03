@@ -28,7 +28,6 @@ const styles = {
 		background: "#000",
 		position: "absolute",
 		top: "10px",
-		left: "45px",
 		padding: "3px 10px",
 		color: "#fff",
 		cursor: "pointer"
