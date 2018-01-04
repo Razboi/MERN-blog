@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Button, Container, Header } from "semantic-ui-react";
+import { Button, Container, Header, Card, Image } from "semantic-ui-react";
 import HeaderComponent from "../header";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -34,11 +34,23 @@ const styles = {
 		background: "#fff",
 		border: "1px solid #D3D3D3",
 		padding: "10px",
-		marginTop: "50px"
+		marginTop: "50px",
+		overflowX: "scroll",
+		whiteSpace: "nowrap"
 	},
-	relatedImages: {
-		height: "280px",
-		width: "380px"
+	relatedPost: {
+		display: "inline-block",
+		margin: "0px 10px"
+	},
+	relatedHeader: {
+		fontSize: "17.5px",
+		overflow: "hidden",
+		whiteSpace: "normal",
+		height: "55px"
+	},
+	relatedImage: {
+		height: "163.13px",
+		width: "290px"
 	}
 };
 
@@ -47,7 +59,7 @@ class PostDetails extends React.Component {
 		super();
 		this.state = {
 			postInfo: {},
-			relatedImage: ""
+			relatedPosts: []
 		};
 	}
 
@@ -55,7 +67,7 @@ class PostDetails extends React.Component {
 		var categories = this.state.postInfo.categories;
 		axios.get( `/api/category/${categories}/1` )
 		.then( ( response ) => {
-			this.setState({ relatedImage: response.data[ 0 ].image });
+			this.setState({ relatedPosts: response.data });
 		}).catch( err => console.log( err ) );
 	};
 
@@ -68,6 +80,14 @@ class PostDetails extends React.Component {
 	componentDidUpdate(prevProps, prevState) {
 		if ( prevState.postInfo.categories !== this.state.postInfo.categories ) {
 			this.getRelated();
+		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if ( nextProps.location.pathname !== this.props.location.pathname ) {
+			axios.get("/api/post/" + nextProps.match.params.slug ).then( ( response ) => {
+				this.setState({ postInfo: response.data });
+			}).catch( err => console.log( err ) );
 		}
 	}
 
@@ -97,13 +117,28 @@ class PostDetails extends React.Component {
 						}
 					</Container>
 					<Container style={ styles.related }>
-						{this.state.relatedImage &&
-							<img
-								style={ styles.relatedImages }
-								src={require("../../public/uploads/" + this.state.relatedImage )}
-								alt="Related post"
-							/>
-						}
+						{this.state.relatedPosts.map( (post, index ) =>
+
+							<Card key={post._id} style={styles.relatedPost}>
+								<Link to={`/post/${post.slug}`}>
+									<Image
+										style={styles.relatedImage}
+										src={require(
+												"../../public/uploads/" + post.image
+										)}
+										alt="Related post"
+									/>
+								</Link>
+								<Card.Content>
+									<Card.Header style={ styles.relatedHeader }>
+										<Link to={`/post/${post.slug}`}>
+											{post.title}
+										</Link>
+									</Card.Header>
+								</Card.Content>
+							</Card>
+						)}
+
 					</Container>
 				</div>
 
