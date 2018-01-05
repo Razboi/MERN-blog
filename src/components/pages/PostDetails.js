@@ -16,25 +16,30 @@ const styles = {
 		paddingBottom: "70px"
 	},
 	container: {
-		padding: "70px 100px",
-		width: "50em",
+		padding: "80px 100px",
+		width: "43em",
 		"background": "#fff",
 		borderRadius: "0px",
-		border: "1px solid #D3D3D3"
+		border: "1px solid #D3D3D3",
+		marginTop: "30px",
+		fontFamily: "Roboto, sans-serif",
+		fontSize: "22px",
+		boxShadow: "0px 0px 40px 10px #D3D3D3"
 	},
 	content: {
-		marginTop: "70px"
+		marginTop: "60px",
+		lineHeighy: "33px"
 	},
 	title: {
-		fontSize: "32px",
+		fontSize: "37px",
 		textAlign: "center",
-		color: "#23769b"
+		color: "#005b96",
+		fontFamily: "Roboto Condensed, sans-serif"
 	},
 	related: {
 		background: "#fff",
 		border: "1px solid #D3D3D3",
 		padding: "10px",
-		marginTop: "50px",
 		overflowX: "scroll",
 		whiteSpace: "nowrap"
 	},
@@ -51,6 +56,12 @@ const styles = {
 	relatedImage: {
 		height: "163.13px",
 		width: "290px"
+	},
+	relatedTitle: {
+		marginTop: "50px",
+		textAlign: "center",
+		padding: "5px",
+		background: "#005b96"
 	}
 };
 
@@ -115,6 +126,9 @@ class PostDetails extends React.Component {
 								<Button primary>Update</Button>
 							</Link>
 						}
+					</Container>
+					<Container style={ styles.relatedTitle }>
+						<Header>Related Posts</Header>
 					</Container>
 					<Container style={ styles.related }>
 						{this.state.relatedPosts.map( (post, index ) =>
