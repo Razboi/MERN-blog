@@ -10,21 +10,20 @@ const styles = {
 	wrapper: {
 		fontSize: "18px",
 		textAlign: "justify",
-		"background": "transparent",
+		"background": "#f4f2f0",
 		position: "relative",
 		top: "0px",
-		paddingBottom: "70px"
+		paddingBottom: "70px",
+		paddingTop: "30px"
 	},
 	container: {
 		padding: "80px 100px",
 		width: "43em",
-		"background": "#fff",
+		"background": "#f9f8f7",
 		borderRadius: "0px",
-		border: "1px solid #D3D3D3",
-		marginTop: "30px",
 		fontFamily: "Roboto, sans-serif",
-		fontSize: "22px",
-		boxShadow: "0px 0px 40px 10px #D3D3D3"
+		fontSize: "21px",
+		boxShadow: "0px 0px 40px 2px #D3D3D3"
 	},
 	content: {
 		marginTop: "60px",
@@ -70,8 +69,10 @@ class PostDetails extends React.Component {
 		super();
 		this.state = {
 			postInfo: {},
-			relatedPosts: []
+			relatedPosts: [],
+			navbarLock: false
 		};
+		this.handleScroll = this.handleScroll.bind( this );
 	}
 
 	getRelated = () => {
@@ -102,6 +103,24 @@ class PostDetails extends React.Component {
 		}
 	}
 
+	componentDidMount() {
+		window.addEventListener("scroll", this.handleScroll );
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("scroll", this.handleScroll );
+	}
+
+	// if window scroll is greater than the position of the navbar set navbarLock to true
+	handleScroll() {
+		if ( window.scrollY >= 453 ) {
+			this.setState({ navbarLock: true });
+		} else if ( window.scrollY < 453 ) {
+			this.setState({ navbarLock: false });
+		}
+	}
+
+
 	render() {
 		return (
 			<div>
@@ -110,8 +129,13 @@ class PostDetails extends React.Component {
 					<HeaderComponent
 						postDetails={true}
 						image={`uploads/${this.state.postInfo.image}`}
+						lock={this.state.navbarLock}
 					/>
-				: <HeaderComponent postDetails={true} image="images/loader-image.png" />
+				: <HeaderComponent
+					postDetails={true}
+					image="images/loader-image.png"
+					lock={this.state.navbarLock}
+					/>
 				}
 
 				<div style={ styles.wrapper }>

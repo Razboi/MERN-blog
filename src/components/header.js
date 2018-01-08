@@ -50,6 +50,7 @@ class HeaderComponent extends React.Component {
 					clearSearch={this.props.clearSearch}
 					details={this.props.postDetails ? true : false}
 					style={styles.navbar}
+					lock={this.props.lock}
 				/>
 			</header>
 		);

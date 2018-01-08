@@ -11,9 +11,8 @@ const styles = {
 	navbar: {
 		"backgroundColor": "rgba(0, 0, 0, 0.7)",
 		"padding": "10px",
-		"overflow": "hidden",
-		"position": "absolute",
-		"width": "100%"
+		"width": "100%",
+		zIndex: "3"
 	},
 	rightMenu: {
 		"float": "right",
@@ -114,10 +113,10 @@ class NavBar extends React.Component {
 
 	render() {
 		return (
-			<nav style={ this.props.details ?
-				{ ...styles.navbar, bottom: "0px" }
+			<nav id="navbar" style={ this.props.lock ?
+				{ ...styles.navbar, position: "fixed", top: "0px" }
 			:
-			{ ...styles.navbar, bottom: "0px" }
+			{ ...styles.navbar, position: "absolute", bottom: "0px" }
 			}>
 				<div style={styles.leftMenu}>
 					<span

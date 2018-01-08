@@ -62,8 +62,11 @@ class IndexPage extends React.Component {
 		category: "",
 		search: "",
 		pageNum: 1,
-		maxPages: undefined
+		maxPages: undefined,
+		navbarLock: false
 	};
+
+	this.handleScroll = this.handleScroll.bind( this );
 	}
 
 // function for requesting all the posts (in limit) passing the current pageNum
@@ -96,6 +99,24 @@ class IndexPage extends React.Component {
 			this.setState({ maxPages: Math.ceil( response.data[ 0 ] / 7 ) });
 		}).catch( err => console.log( err ) );
 	};
+
+// when te user scrolls call the handleScroll function
+	componentDidMount() {
+		window.addEventListener("scroll", this.handleScroll );
+	}
+
+	componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll );
+}
+
+// if window scroll is greater than the position of the navbar set navbarLock to true
+	handleScroll() {
+		if ( window.scrollY >= 253 ) {
+			this.setState({ navbarLock: true });
+		} else if ( window.scrollY < 253 ) {
+			this.setState({ navbarLock: false });
+		}
+	}
 
 // before mounting get the location state, posts and posts count
 	componentWillMount() {
@@ -166,6 +187,7 @@ class IndexPage extends React.Component {
 					renderSearch={this.renderSearch}
 					clearSearch={this.clearSearch}
 					image="images/code-wallpaper01.jpg"
+					lock={this.state.navbarLock}
 				/>
 
 				<div style={styles.index}>
