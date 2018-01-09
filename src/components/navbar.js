@@ -24,9 +24,10 @@ const styles = {
 	categories: {
 		color: "#fff",
 		marginLeft: "25px",
-		fontSize: "18px",
+		fontSize: "19px",
 		fontWeight: "bold",
-		cursor: "pointer"
+		cursor: "pointer",
+		fontFamily: "Roboto, sans-serif"
 	},
 	search: {
 		background: "transparent",

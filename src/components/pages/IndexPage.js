@@ -47,6 +47,14 @@ const styles = {
 		position: "absolute",
 		bottom: "0px",
 		left: "0px"
+	},
+	topButton: {
+		position: "fixed",
+		right: "100px",
+		bottom: "10px",
+		fontSize: "40px",
+		color: "#000",
+		cursor: "pointer"
 	}
 };
 
@@ -75,7 +83,6 @@ class IndexPage extends React.Component {
 		axios.get( `/api/posts/${this.state.pageNum}` ).then( ( response ) => {
 			this.setState({ posts: response.data });
 		}).catch( err => console.log( err ) );
-		console.log("posts");
 	};
 
 	getSearchPosts = () => {
@@ -179,6 +186,10 @@ class IndexPage extends React.Component {
 		}
 	};
 
+	goTop = () => {
+		window.scrollTo( 0, 0 );
+	};
+
 	render() {
 		return (
 			<div>
@@ -261,7 +272,13 @@ class IndexPage extends React.Component {
 
 					</div>
 				</div>
-
+				{this.state.navbarLock &&
+					<Icon
+						style={styles.topButton}
+						onClick={this.goTop}
+						name="arrow circle up"
+					/>
+				}
 			</div>
 		);
 	}

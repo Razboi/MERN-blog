@@ -18,10 +18,16 @@ const styles = {
 		padding: "15px"
 	},
 	description: {
-		marginTop: "10px"
+		marginTop: "10px",
+		fontFamily: "Roboto, sans-serif",
+		color: "#383838",
+		fontSize: "15.5px"
 	},
 	oddDescription: {
-		marginTop: "40px"
+		marginTop: "40px",
+		fontFamily: "Roboto, sans-serif",
+		color: "#383838",
+		fontSize: "15.5px"
 	},
 	card: {
 		width: "100%",
@@ -88,7 +94,9 @@ class Post extends React.Component {
 
 						<Grid.Column width={10}>
 							<Link to={`/post/${this.props.slug}`}>
-								<h2>{ this.props.title }</h2>
+								<h2 style={{ fontFamily: "Roboto Condensed, sans-serif" }}>
+									{ this.props.title }
+								</h2>
 							</Link>
 							<p style={ styles.oddDescription }>
 								{this.props.introduction}
@@ -124,7 +132,9 @@ class Post extends React.Component {
 					<Card.Content style={ styles.content }>
 						<Link to={`/post/${this.props.slug}`}>
 							<Card.Header>
-								<h2>{ this.props.title }</h2>
+								<h2 style={{ fontFamily: "Roboto Condensed, sans-serif" }}>
+									{ this.props.title }
+								</h2>
 							</Card.Header>
 						</Link>
 							<Card.Description style={ styles.description }>

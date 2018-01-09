@@ -14,7 +14,8 @@ const styles = {
 		backgroundColor: "rgba(0, 0, 0, 0.7)",
 		padding: "3px 30px",
 		borderRadius: "0px",
-		border: "1px solid #fff"
+		border: "1px solid #fff",
+		fontFamily: "Roboto Slab, serif"
 	}
 };
 

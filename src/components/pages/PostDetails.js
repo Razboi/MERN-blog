@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Button, Container, Header, Card, Image } from "semantic-ui-react";
+import { Button, Container, Header, Card, Image, Icon } from "semantic-ui-react";
 import HeaderComponent from "../header";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -59,8 +59,17 @@ const styles = {
 	relatedTitle: {
 		marginTop: "50px",
 		textAlign: "center",
-		padding: "5px",
-		background: "#005b96"
+		padding: "7px 0px 2px 0px",
+		background: "#005b96",
+		fontFamily: "Roboto Condensed, sans-serif"
+	},
+	topButton: {
+		position: "fixed",
+		right: "100px",
+		bottom: "10px",
+		fontSize: "40px",
+		color: "#000",
+		cursor: "pointer"
 	}
 };
 
@@ -120,6 +129,10 @@ class PostDetails extends React.Component {
 		}
 	}
 
+	goTop = () => {
+		window.scrollTo( 0, 0 );
+	};
+
 
 	render() {
 		return (
@@ -152,7 +165,11 @@ class PostDetails extends React.Component {
 						}
 					</Container>
 					<Container style={ styles.relatedTitle }>
-						<Header>Related Posts</Header>
+						<Header
+							style={{ fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px" }}
+						>
+							Related Posts
+						</Header>
 					</Container>
 					<Container style={ styles.related }>
 						{this.state.relatedPosts.map( (post, index ) =>
@@ -169,7 +186,10 @@ class PostDetails extends React.Component {
 								</Link>
 								<Card.Content>
 									<Card.Header style={ styles.relatedHeader }>
-										<Link to={`/post/${post.slug}`}>
+										<Link
+											to={`/post/${post.slug}`}
+											style={{ fontFamily: "Roboto, sans-serif" }}
+										>
 											{post.title}
 										</Link>
 									</Card.Header>
@@ -179,8 +199,13 @@ class PostDetails extends React.Component {
 
 					</Container>
 				</div>
-
-
+				{this.state.navbarLock &&
+					<Icon
+						style={styles.topButton}
+						onClick={this.goTop}
+						name="arrow circle up"
+					/>
+				}
 			</div>
 		);
 	}
