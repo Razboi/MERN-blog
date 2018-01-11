@@ -122,9 +122,9 @@ class PostDetails extends React.Component {
 
 	// if window scroll is greater than the position of the navbar set navbarLock to true
 	handleScroll() {
-		if ( window.scrollY >= 453 ) {
+		if ( window.scrollY >= 453 && !this.state.navbarLock ) {
 			this.setState({ navbarLock: true });
-		} else if ( window.scrollY < 453 ) {
+		} else if ( window.scrollY < 453 && this.state.navbarLock ) {
 			this.setState({ navbarLock: false });
 		}
 	}
@@ -153,6 +153,10 @@ class PostDetails extends React.Component {
 
 				<div style={ styles.wrapper }>
 					<Container style={ styles.container }>
+						<span>
+							{this.state.postInfo.author} {this.state.postInfo.created}
+						</span>
+
 						<Header style={ styles.title }>{this.state.postInfo.title}</Header>
 						<p
 							dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}

@@ -118,9 +118,9 @@ class IndexPage extends React.Component {
 
 // if window scroll is greater than the position of the navbar set navbarLock to true
 	handleScroll() {
-		if ( window.scrollY >= 253 ) {
+		if ( window.scrollY >= 253 && !this.state.navbarLock ) {
 			this.setState({ navbarLock: true });
-		} else if ( window.scrollY < 253 ) {
+		} else if ( window.scrollY < 253 && this.state.navbarLock ) {
 			this.setState({ navbarLock: false });
 		}
 	}
@@ -290,7 +290,8 @@ IndexPage.propTypes = {
 
 function mapStateToProps( state ) {
 	return {
-		isAuthenticated: !!state.user.token
+		isAuthenticated: !!state.user.token,
+		username: state.user.username
 	};
 }
 

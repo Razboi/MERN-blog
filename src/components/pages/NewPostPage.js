@@ -37,6 +37,7 @@ class NewPostPage extends React.Component {
 	onSubmit = (e) => {
 		e.preventDefault();
 		var formData = new FormData( document.getElementById("postForm") );
+		formData.append("username", localStorage.username );
 		axios.post("/api/posts", formData ).then( ( response ) => {
 			console.log( response );
 		}).catch( err => console.log( err ) );
