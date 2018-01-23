@@ -113,7 +113,7 @@ class NewPostPage extends React.Component {
 							style={ styles.inputs }
 						/>
 					</div>
-					<Form.Button>Done</Form.Button>
+					<Form.Button primary>Done</Form.Button>
 				</Form>
 
 			</div>

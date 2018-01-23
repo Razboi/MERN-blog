@@ -93,7 +93,7 @@ class UpdateForm extends React.Component {
 							style={ styles.inputs }
 						/>
 					</div>
-					<Form.Button>Update</Form.Button>
+					<Form.Button primary>Update</Form.Button>
 				</Form>
 		);
 	}

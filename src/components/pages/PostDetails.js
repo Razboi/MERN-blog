@@ -27,7 +27,8 @@ const styles = {
 	},
 	content: {
 		marginTop: "60px",
-		lineHeighy: "33px"
+		lineHeighy: "33px",
+		overflow: "hidden"
 	},
 	title: {
 		fontSize: "37px",
