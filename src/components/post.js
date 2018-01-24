@@ -7,6 +7,10 @@ const styles = {
 		"flex": "1 1 40%",
 		"margin": "20px 15px"
 	},
+	evenPostSmall: {
+		"flex": "1 1 100%",
+		"margin": "20px 15px"
+	},
 	oddPost: {
 		flex: "1 1 100%",
 		backgroundColor: "#fff",
@@ -83,7 +87,7 @@ class Post extends React.Component {
 		var isOdd = false;
 		// if the post is a multiple of 3 (or is the first post) set post to a grid element
 		// else set the post to a card element
-		if ( ( this.props.index ) % 3 === 0 ) {
+		if ( ( this.props.index ) % 3 === 0 && !this.props.smallDevice ) {
 			isOdd = true;
 			post = (
 					<Grid
@@ -146,6 +150,11 @@ class Post extends React.Component {
 			);
 		}
 		return (
+			this.props.smallDevice ?
+			<article style={ styles.evenPostSmall }>
+				{ post }
+			</article>
+			:
 			<article style={ isOdd ? styles.oddPost : styles.evenPost }>
 				{ post }
 			</article>

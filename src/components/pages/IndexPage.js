@@ -17,7 +17,15 @@ const styles = {
 		position: "relative"
 	},
 	postsContainer: {
-		"width": "70%",
+		width: "70%",
+		"display": "flex",
+		"flexWrap": "wrap",
+		"justifyContent": "center",
+		position: "relative",
+		paddingBottom: "60px"
+	},
+	postsContainerSmall: {
+		width: "100%",
 		"display": "flex",
 		"flexWrap": "wrap",
 		"justifyContent": "center",
@@ -71,10 +79,12 @@ class IndexPage extends React.Component {
 		search: "",
 		pageNum: 1,
 		maxPages: undefined,
-		navbarLock: false
+		navbarLock: false,
+		smallDevice: false
 	};
 
 	this.handleScroll = this.handleScroll.bind( this );
+	this.onWindowResize = this.onWindowResize.bind( this );
 	}
 
 // function for requesting all the posts (in limit) passing the current pageNum
@@ -110,6 +120,7 @@ class IndexPage extends React.Component {
 // when te user scrolls call the handleScroll function
 	componentDidMount() {
 		window.addEventListener("scroll", this.handleScroll );
+		window.addEventListener("resize", this.onWindowResize );
 	}
 
 	componentWillUnmount() {
@@ -122,6 +133,14 @@ class IndexPage extends React.Component {
 			this.setState({ navbarLock: true });
 		} else if ( window.scrollY < 253 && this.state.navbarLock ) {
 			this.setState({ navbarLock: false });
+		}
+	}
+
+	onWindowResize() {
+		if ( window.matchMedia("(max-width: 1024px)").matches ) {
+			this.setState({ smallDevice: true });
+		} else {
+			this.setState({ smallDevice: false });
 		}
 	}
 
@@ -209,7 +228,12 @@ class IndexPage extends React.Component {
 						</span>
 					}
 
-					<div style={styles.postsContainer}>
+					<div
+						style={ this.state.smallDevice ?
+							styles.postsContainerSmall
+						:
+							styles.postsContainer
+						}>
 						{this.state.searchPosts.length > 0 ?
 							this.state.searchPosts.map( (post, index) =>
 
@@ -220,6 +244,7 @@ class IndexPage extends React.Component {
 									image={post.image}
 									slug={post.slug}
 									index={index}
+									smallDevice={this.state.smallDevice}
 								/>
 
 							)
@@ -233,6 +258,7 @@ class IndexPage extends React.Component {
 								image={post.image}
 								slug={post.slug}
 								index={index}
+								smallDevice={this.state.smallDevice}
 							/>
 
 						)
