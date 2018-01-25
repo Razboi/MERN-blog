@@ -5,6 +5,7 @@ import HeaderComponent from "../header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {Icon, Button} from "semantic-ui-react";
+import Radium from "radium";
 
 const styles = {
 	index: {
@@ -22,15 +23,10 @@ const styles = {
 		"flexWrap": "wrap",
 		"justifyContent": "center",
 		position: "relative",
-		paddingBottom: "60px"
-	},
-	postsContainerSmall: {
-		width: "100%",
-		"display": "flex",
-		"flexWrap": "wrap",
-		"justifyContent": "center",
-		position: "relative",
-		paddingBottom: "60px"
+		paddingBottom: "60px",
+		"@media screen and (max-width: 550px)": {
+			width: "100%"
+		}
 	},
 	categoryLabel: {
 		background: "#000",
@@ -125,6 +121,7 @@ class IndexPage extends React.Component {
 
 	componentWillUnmount() {
     window.removeEventListener("scroll", this.handleScroll );
+		window.removeEventListener("resize", this.onWindowResize );
 }
 
 // if window scroll is greater than the position of the navbar set navbarLock to true
@@ -321,4 +318,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default connect( mapStateToProps )( IndexPage );
+export default connect( mapStateToProps )( Radium( IndexPage ) );

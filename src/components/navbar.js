@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import Radium from "radium";
 
 const styles = {
 	navbar: {
@@ -19,7 +20,10 @@ const styles = {
 		marginRight: "25px"
 	},
 	leftMenu: {
-		"float": "left"
+		"float": "left",
+		"@media screen and (max-width: 550px)": {
+			display: "none"
+		}
 	},
 	categories: {
 		color: "#fff",
@@ -197,4 +201,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default withRouter( connect( mapStateToProps, { logout })( NavBar ) );
+export default withRouter( connect( mapStateToProps, { logout })( Radium( NavBar ) ) );

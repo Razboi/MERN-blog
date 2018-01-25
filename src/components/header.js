@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import NavBar from "./navbar";
+import Radium from "radium";
 
 const styles = {
 	titleWrapper: {
@@ -15,7 +16,10 @@ const styles = {
 		padding: "3px 30px",
 		borderRadius: "0px",
 		border: "1px solid #fff",
-		fontFamily: "Roboto Slab, serif"
+		fontFamily: "Roboto Slab, serif",
+		"@media screen and (max-width: 550px)": {
+			padding: "3px 20px"
+		}
 	}
 };
 
@@ -58,4 +62,4 @@ class HeaderComponent extends React.Component {
 	}
 };
 
-export default HeaderComponent;
+export default Radium( HeaderComponent );
