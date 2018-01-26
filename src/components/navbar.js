@@ -15,13 +15,24 @@ const styles = {
 		"width": "100%",
 		zIndex: "3"
 	},
+	sidebarButton: {
+		display: "none",
+		"@media screen and (max-width: 900px)": {
+			display: "inline",
+			float: "right",
+			marginRight: "10px"
+		}
+	},
 	rightMenu: {
 		"float": "right",
-		marginRight: "25px"
+		marginRight: "25px",
+		"@media screen and (max-width: 900px)": {
+			display: "none"
+		}
 	},
 	leftMenu: {
 		"float": "left",
-		"@media screen and (max-width: 550px)": {
+		"@media screen and (max-width: 900px)": {
 			display: "none"
 		}
 	},
@@ -35,14 +46,15 @@ const styles = {
 	},
 	search: {
 		background: "transparent",
-		border: "none",
-		borderBottom: "1px solid #fff",
+		borderWidth: "0px 0px 1px 0px",
+		borderColor: "#fff",
 		color: "#fff",
 		padding: "5px"
 	},
 	buttons: {
 		color: "#fff",
-		marginRight: "8px"
+		marginRight: "8px",
+		cursor: "pointer"
 	}
 };
 
@@ -166,7 +178,13 @@ class NavBar extends React.Component {
 							size="large"
 						/>
 					</form>
-
+				</div>
+				<div style={styles.sidebarButton}>
+					<Icon
+						style={styles.buttons}
+						name="bars"
+						size="large"
+					/>
 				</div>
 				{this.props.isAuthenticated &&
 					<div style={styles.rightMenu}>

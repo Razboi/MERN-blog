@@ -23,10 +23,7 @@ const styles = {
 		"flexWrap": "wrap",
 		"justifyContent": "center",
 		position: "relative",
-		paddingBottom: "60px",
-		"@media screen and (max-width: 550px)": {
-			width: "100%"
-		}
+		paddingBottom: "60px"
 	},
 	categoryLabel: {
 		background: "#000",
@@ -45,12 +42,16 @@ const styles = {
 	nextPage: {
 		position: "absolute",
 		bottom: "0px",
-		right: "0px"
+		right: "0px",
+		margin: "0px",
+		borderRadius: "0px"
 	},
 	prevPage: {
 		position: "absolute",
 		bottom: "0px",
-		left: "0px"
+		left: "0px",
+		margin: "0px",
+		borderRadius: "0px"
 	},
 	topButton: {
 		position: "fixed",
@@ -134,7 +135,7 @@ class IndexPage extends React.Component {
 	}
 
 	onWindowResize() {
-		if ( window.matchMedia("(max-width: 1024px)").matches ) {
+		if ( window.matchMedia("(max-width: 1200px)").matches ) {
 			this.setState({ smallDevice: true });
 		} else {
 			this.setState({ smallDevice: false });
@@ -155,6 +156,7 @@ class IndexPage extends React.Component {
 			});
 			this.props.history.replace({ state: {} });
 		}
+		this.onWindowResize();
 	}
 
 // every time the component updates if the page number has changed we get the new posts
@@ -295,13 +297,14 @@ class IndexPage extends React.Component {
 
 					</div>
 				</div>
-				{this.state.navbarLock &&
-					<Icon
-						style={styles.topButton}
-						onClick={this.goTop}
-						name="arrow circle up"
-					/>
-				}
+
+				{this.state.navbarLock && window.matchMedia("(min-width: 900px)").matches &&
+						<Icon
+							style={styles.topButton}
+							onClick={this.goTop}
+							name="arrow circle up"
+						/>
+					}
 			</div>
 		);
 	}

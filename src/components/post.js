@@ -1,15 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Image, Grid } from "semantic-ui-react";
+import Radium from "radium";
 
 const styles = {
 	evenPost: {
 		"flex": "1 1 40%",
-		"margin": "20px 15px"
-	},
-	evenPostSmall: {
-		"flex": "1 1 100%",
-		"margin": "20px 15px"
+		"margin": "20px 15px",
+		"@media screen and (max-width: 1200px)": {
+			"flex": "1 1 100%"
+		},
+		"@media screen and (min-width: 768px) and (max-width: 900px)": {
+			"padding": "0px 70px"
+		},
+		"@media screen and (min-width: 900px) and (max-width: 1200px)": {
+			"padding": "0px 150px"
+		}
 	},
 	oddPost: {
 		flex: "1 1 100%",
@@ -150,11 +156,6 @@ class Post extends React.Component {
 			);
 		}
 		return (
-			this.props.smallDevice ?
-			<article style={ styles.evenPostSmall }>
-				{ post }
-			</article>
-			:
 			<article style={ isOdd ? styles.oddPost : styles.evenPost }>
 				{ post }
 			</article>
@@ -162,4 +163,4 @@ class Post extends React.Component {
 	}
 }
 
-export default Post;
+export default Radium( Post );
