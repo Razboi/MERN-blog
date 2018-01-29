@@ -102,18 +102,21 @@ class NavBar extends React.Component {
 		const state = this.state;
 		state[ e.target.name ] = e.target.value;
 		this.setState( state );
-		console.log( this.state );
 	};
 
+	componentDidUpdate(prevProps, prevState) {
+		if ( this.props.search !== prevProps.search ) {
+			this.setState({ search: this.props.search });
+		}
+	}
+
 	filterCategory = (category) => {
-		this.setState({ search: "" });
 		axios.get( `/api/count/category/${category}` ).then( ( response ) => {
 			this.setState({ count: response.data[ 0 ] });
-			console.log( response.data[ 0 ] );
 		}).catch( err => console.log( err ) );
 		axios.get( `/api/category/${category}/1` ).then( (res) => {
 			this.props.renderSearch ?
-			this.props.renderSearch( res.data, category, this.state.count )
+			this.props.renderSearch( res.data, category, this.state.count, "" )
 			:
 			this.props.history.push({
 				pathname: "/",
@@ -179,7 +182,7 @@ class NavBar extends React.Component {
 						/>
 					</form>
 				</div>
-				<div style={styles.sidebarButton}>
+				<div style={styles.sidebarButton} onClick={this.props.toggleSidebar}>
 					<Icon
 						style={styles.buttons}
 						name="bars"

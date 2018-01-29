@@ -4,7 +4,7 @@ import axios from "axios";
 import HeaderComponent from "../header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import {Icon, Button} from "semantic-ui-react";
+import {Button, Icon } from "semantic-ui-react";
 import Radium from "radium";
 
 const styles = {
@@ -60,6 +60,19 @@ const styles = {
 		fontSize: "40px",
 		color: "#000",
 		cursor: "pointer"
+	},
+	backArrow: {
+		position: "absolute",
+		left: "170px",
+		top: "15px",
+		cursor: "pointer"
+	},
+	backArrowIcon: {
+		fontSize: "33px"
+	},
+	sidebarWrapper: {
+		border: "none",
+		borderRadius: "0px"
 	}
 };
 
@@ -77,7 +90,8 @@ class IndexPage extends React.Component {
 		pageNum: 1,
 		maxPages: undefined,
 		navbarLock: false,
-		smallDevice: false
+		smallDevice: false,
+		sidebar: false
 	};
 
 	this.handleScroll = this.handleScroll.bind( this );
@@ -180,7 +194,7 @@ class IndexPage extends React.Component {
 
 // clear searchPosts, category and pageNum
 	clearState = () => {
-		this.setState({ searchPosts: "", category: "", pageNum: 1 });
+		this.setState({ searchPosts: "", category: "", pageNum: 1, search: "" });
 	};
 
 // clear search results and get posts count/maxPage
@@ -208,6 +222,10 @@ class IndexPage extends React.Component {
 		window.scrollTo( 0, 0 );
 	};
 
+	toggleSidebar = () => {
+		this.setState({ sidebar: !this.state.sidebar });
+	};
+
 	render() {
 		return (
 			<div>
@@ -217,9 +235,19 @@ class IndexPage extends React.Component {
 					clearSearch={this.clearSearch}
 					image="images/code-wallpaper01.jpg"
 					lock={this.state.navbarLock}
+					toggleSidebar={this.toggleSidebar}
 				/>
 
 				<div style={styles.index}>
+					{ (this.state.category || this.state.search) &&
+						<span style={styles.backArrow} onClick={this.clearSearch}>
+							<Icon
+								style={styles.backArrowIcon}
+								name="arrow circle outline left"
+								size="large"
+							/>
+						</span>
+					}
 					{ this.state.category &&
 						<span style={styles.categoryLabel} onClick={this.clearSearch}>
 							{this.state.category}
@@ -229,9 +257,9 @@ class IndexPage extends React.Component {
 
 					<div
 						style={ this.state.smallDevice ?
-							styles.postsContainerSmall
+								styles.postsContainerSmall
 						:
-							styles.postsContainer
+								styles.postsContainer
 						}>
 						{this.state.searchPosts.length > 0 ?
 							this.state.searchPosts.map( (post, index) =>
@@ -299,12 +327,12 @@ class IndexPage extends React.Component {
 				</div>
 
 				{this.state.navbarLock && window.matchMedia("(min-width: 900px)").matches &&
-						<Icon
-							style={styles.topButton}
-							onClick={this.goTop}
-							name="arrow circle up"
-						/>
-					}
+					<Icon
+						style={styles.topButton}
+						onClick={this.goTop}
+						name="arrow circle up"
+					/>
+				}
 			</div>
 		);
 	}

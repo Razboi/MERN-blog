@@ -44,7 +44,7 @@ class HeaderComponent extends React.Component {
 			<header style={headerStyle}>
 				<div style={styles.titleWrapper}>
 					<Link to="/">
-						<span style={styles.title}>
+						<span style={styles.title} onClick={this.props.clearSearch}>
 							<span>&lt;</span> Marc Recatala <span>/&gt;</span>
 						</span>
 					</Link>
@@ -56,6 +56,7 @@ class HeaderComponent extends React.Component {
 					details={this.props.postDetails ? true : false}
 					style={styles.navbar}
 					lock={this.props.lock}
+					toggleSidebar={this.props.toggleSidebar}
 				/>
 			</header>
 		);

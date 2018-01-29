@@ -22,12 +22,12 @@ if ( localStorage.loginJWT ) {
 }
 
 ReactDOM.render(
-	<BrowserRouter>
-		<Provider store={store}>
-			<StyleRoot>
+	<StyleRoot>
+		<BrowserRouter>
+			<Provider store={store}>
 				<Route component={App} />
-			</StyleRoot>
-		</Provider>
-	</BrowserRouter>,
+			</Provider>
+		</BrowserRouter>
+	</StyleRoot>,
 	document.getElementById("root")
 );
