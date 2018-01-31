@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {Button, Icon } from "semantic-ui-react";
 import Radium from "radium";
+import SideBar from "../sidebar";
 
 const styles = {
 	index: {
@@ -63,7 +64,7 @@ const styles = {
 	},
 	backArrow: {
 		position: "absolute",
-		left: "170px",
+		left: "15%",
 		top: "15px",
 		cursor: "pointer"
 	},
@@ -229,6 +230,11 @@ class IndexPage extends React.Component {
 	render() {
 		return (
 			<div>
+				{this.state.sidebar &&
+					<SideBar
+						renderSearch={this.renderSearch}
+					/>
+				}
 				<HeaderComponent
 					search={this.state.search}
 					renderSearch={this.renderSearch}
@@ -240,13 +246,16 @@ class IndexPage extends React.Component {
 
 				<div style={styles.index}>
 					{ (this.state.category || this.state.search) &&
-						<span style={styles.backArrow} onClick={this.clearSearch}>
+
+						<div style={styles.backArrow} onClick={this.clearSearch}>
 							<Icon
 								style={styles.backArrowIcon}
 								name="arrow circle outline left"
 								size="large"
 							/>
-						</span>
+						</div>
+
+
 					}
 					{ this.state.category &&
 						<span style={styles.categoryLabel} onClick={this.clearSearch}>

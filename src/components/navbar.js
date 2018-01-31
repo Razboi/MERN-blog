@@ -30,6 +30,14 @@ const styles = {
 			display: "none"
 		}
 	},
+	searchWrapper: {
+		"float": "right",
+		marginRight: "25px",
+		"@media screen and (max-width: 900px)": {
+			"float": "left",
+			"margin": "0px 0px 0px 25px"
+		}
+	},
 	leftMenu: {
 		"float": "left",
 		"@media screen and (max-width: 900px)": {
@@ -164,7 +172,14 @@ class NavBar extends React.Component {
 						Raspberry Pi
 					</span>
 				</div>
-				<div style={styles.rightMenu}>
+				<div style={styles.sidebarButton} onClick={this.props.toggleSidebar}>
+					<Icon
+						style={styles.buttons}
+						name="bars"
+						size="large"
+					/>
+				</div>
+				<div style={styles.searchWrapper}>
 					<form onSubmit={this.onSubmit}>
 						<input
 							style={styles.search}
@@ -182,13 +197,7 @@ class NavBar extends React.Component {
 						/>
 					</form>
 				</div>
-				<div style={styles.sidebarButton} onClick={this.props.toggleSidebar}>
-					<Icon
-						style={styles.buttons}
-						name="bars"
-						size="large"
-					/>
-				</div>
+
 				{this.props.isAuthenticated &&
 					<div style={styles.rightMenu}>
 						<Link style={styles.buttons} to="/new-post">
