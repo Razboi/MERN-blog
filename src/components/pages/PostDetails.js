@@ -7,32 +7,39 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SideBar from "../sidebar";
 import Radium from "radium";
+import styled from "styled-components";
 
+
+const ContainerWrapper = styled.div`
+padding: 80px 5%;
+max-width: 858px;
+background: #f9f8f7;
+border-radius: 0px;
+font-family: Roboto, sans-serif;
+box-shadow: 0px 0px 40px 2px #D3D3D3;
+margin: 0px auto;
+`;
+
+const PostWrapper = styled.div`
+text-align: justify;
+background: #f4f2f0;
+position: relative;
+top: 0px;
+padding-bottom: 70px;
+padding-top: 30px;
+`;
+
+const Content = styled.p`
+font-size: 21px;
+margin-top: 60px;
+line-height: 33px;
+overflow: hidden;
+@media (max-width: 768px) {
+	font-size: 18px;
+}
+`;
 
 const styles = {
-	wrapper: {
-		fontSize: "18px",
-		textAlign: "justify",
-		"background": "#f4f2f0",
-		position: "relative",
-		top: "0px",
-		paddingBottom: "70px",
-		paddingTop: "30px"
-	},
-	container: {
-		padding: "80px 100px",
-		width: "43em",
-		"background": "#f9f8f7",
-		borderRadius: "0px",
-		fontFamily: "Roboto, sans-serif",
-		fontSize: "21px",
-		boxShadow: "0px 0px 40px 2px #D3D3D3"
-	},
-	content: {
-		marginTop: "60px",
-		lineHeighy: "33px",
-		overflow: "hidden"
-	},
 	title: {
 		fontSize: "37px",
 		textAlign: "center",
@@ -166,26 +173,27 @@ class PostDetails extends React.Component {
 						/>
 					}
 
-					<div style={ styles.wrapper }>
-						<Container style={ styles.container } key="1">
+					<PostWrapper>
+						<ContainerWrapper>
 							<span>
 								{this.state.postInfo.author} {this.state.postInfo.created}
 							</span>
 
 							<Header style={ styles.title }>{this.state.postInfo.title}</Header>
-							<p
+							<Content
 								dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
-								style={ styles.content }
 							/>
 							{ this.props.isAuthenticated &&
 								<Link to={`/update-post/${this.props.match.params.slug}`}>
 									<Button primary>Update</Button>
 								</Link>
 							}
-						</Container>
+						</ContainerWrapper>
 						<Container style={ styles.relatedTitle }>
 							<Header
-								style={{ fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px" }}
+								style={{
+									fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px"
+								}}
 							>
 								Related Posts
 							</Header>
@@ -217,7 +225,7 @@ class PostDetails extends React.Component {
 							)}
 
 						</Container>
-					</div>
+					</PostWrapper>
 					{this.state.navbarLock &&
 						<Icon
 							style={styles.topButton}
