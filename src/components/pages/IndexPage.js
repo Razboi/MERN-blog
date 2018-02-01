@@ -157,6 +157,12 @@ class IndexPage extends React.Component {
 		}
 	}
 
+	handleClickOutsideSidebar = () => {
+		if ( this.state.sidebar ) {
+			this.setState({ sidebar: false });
+		}
+	};
+
 // before mounting get the location state, posts and posts count
 	componentWillMount() {
 		if ( !this.props.location.state || !this.props.location.state.searchPosts ) {
@@ -235,43 +241,58 @@ class IndexPage extends React.Component {
 						renderSearch={this.renderSearch}
 					/>
 				}
-				<HeaderComponent
-					search={this.state.search}
-					renderSearch={this.renderSearch}
-					clearSearch={this.clearSearch}
-					image="images/code-wallpaper01.jpg"
-					lock={this.state.navbarLock}
-					toggleSidebar={this.toggleSidebar}
-				/>
+				<div onClick={this.handleClickOutsideSidebar}>
+					<HeaderComponent
+						search={this.state.search}
+						renderSearch={this.renderSearch}
+						clearSearch={this.clearSearch}
+						image="images/code-wallpaper01.jpg"
+						lock={this.state.navbarLock}
+						toggleSidebar={this.toggleSidebar}
+					/>
 
-				<div style={styles.index}>
-					{ (this.state.category || this.state.search) &&
+					<div style={styles.index} onClick={this.handleClickOutside}>
+						{ (this.state.category || this.state.search) &&
 
-						<div style={styles.backArrow} onClick={this.clearSearch}>
-							<Icon
-								style={styles.backArrowIcon}
-								name="arrow circle outline left"
-								size="large"
-							/>
-						</div>
+							<div style={styles.backArrow} onClick={this.clearSearch}>
+								<Icon
+									style={styles.backArrowIcon}
+									name="arrow circle outline left"
+									size="large"
+								/>
+							</div>
 
 
-					}
-					{ this.state.category &&
-						<span style={styles.categoryLabel} onClick={this.clearSearch}>
-							{this.state.category}
-							<Icon style={styles.labelIcon} name="close" size="large" />
-						</span>
-					}
+						}
+						{ this.state.category &&
+							<span style={styles.categoryLabel} onClick={this.clearSearch}>
+								{this.state.category}
+								<Icon style={styles.labelIcon} name="close" size="large" />
+							</span>
+						}
 
-					<div
-						style={ this.state.smallDevice ?
-								styles.postsContainerSmall
-						:
-								styles.postsContainer
-						}>
-						{this.state.searchPosts.length > 0 ?
-							this.state.searchPosts.map( (post, index) =>
+						<div
+							style={ this.state.smallDevice ?
+									styles.postsContainerSmall
+							:
+									styles.postsContainer
+							}>
+							{this.state.searchPosts.length > 0 ?
+								this.state.searchPosts.map( (post, index) =>
+
+									<Post
+										key={post._id}
+										title={post.title}
+										introduction={post.introduction}
+										image={post.image}
+										slug={post.slug}
+										index={index}
+										smallDevice={this.state.smallDevice}
+									/>
+
+								)
+							:
+							this.state.posts.map( (post, index) =>
 
 								<Post
 									key={post._id}
@@ -284,55 +305,43 @@ class IndexPage extends React.Component {
 								/>
 
 							)
-						:
-						this.state.posts.map( (post, index) =>
-
-							<Post
-								key={post._id}
-								title={post.title}
-								introduction={post.introduction}
-								image={post.image}
-								slug={post.slug}
-								index={index}
-								smallDevice={this.state.smallDevice}
-							/>
-
-						)
-						}
-						{this.state.pageNum < this.state.maxPages ?
+							}
+							{this.state.pageNum < this.state.maxPages ?
+								<Button
+									primary
+									style={styles.nextPage}
+									onClick={this.nextPage}
+									content="Next Page"
+								/>
+							:
 							<Button
+								disabled
 								primary
 								style={styles.nextPage}
 								onClick={this.nextPage}
 								content="Next Page"
 							/>
-						:
-						<Button
-							disabled
-							primary
-							style={styles.nextPage}
-							onClick={this.nextPage}
-							content="Next Page"
-						/>
-						}
-						{this.state.pageNum > 1 ?
+							}
+							{this.state.pageNum > 1 ?
+								<Button
+									primary
+									style={styles.prevPage}
+									onClick={this.prevPage}
+									content="Previous Page"
+								/>
+							:
 							<Button
 								primary
+								disabled
 								style={styles.prevPage}
 								onClick={this.prevPage}
 								content="Previous Page"
 							/>
-						:
-						<Button
-							primary
-							disabled
-							style={styles.prevPage}
-							onClick={this.prevPage}
-							content="Previous Page"
-						/>
-						}
+							}
 
-					</div>
+						</div>
+				</div>
+
 				</div>
 
 				{this.state.navbarLock && window.matchMedia("(min-width: 900px)").matches &&

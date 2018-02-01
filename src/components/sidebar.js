@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 import axios from "axios";
 import Radium from "radium";
+import { withRouter } from "react-router-dom";
 
 const styles = {
 	sidebarWrapper: {
@@ -40,11 +41,14 @@ const styles = {
 	},
 	buttons: {
 		color: "#fff",
-		marginRight: "8px",
 		cursor: "pointer"
 	},
 	sidebarList: {
 		marginTop: "40px"
+	},
+	adminOptions: {
+		marginLeft: "25px",
+		paddingTop: "15px"
 	}
 };
 
@@ -105,7 +109,7 @@ render () {
 					Raspberry Pi
 				</span>
 				{this.props.isAuthenticated &&
-					<div>
+					<div style={styles.adminOptions}>
 						<Link style={styles.buttons} to="/new-post">
 							<Icon name="write square" size="large" />
 						</Link>
@@ -128,8 +132,8 @@ SideBar.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired,
 	logout: PropTypes.func.isRequired,
 	history: PropTypes.shape({
-		push: PropTypes.func
-	})
+		push: PropTypes.func.isRequired
+	}).isRequired
 };
 
 function mapStateToProps( state ) {
@@ -138,4 +142,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default connect( mapStateToProps, { logout })( Radium( SideBar ) );
+export default withRouter( connect( mapStateToProps, { logout })( Radium( SideBar ) ) );

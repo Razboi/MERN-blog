@@ -5,6 +5,9 @@ import HeaderComponent from "../header";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import SideBar from "../sidebar";
+import Radium from "radium";
+
 
 const styles = {
 	wrapper: {
@@ -80,7 +83,8 @@ class PostDetails extends React.Component {
 		this.state = {
 			postInfo: {},
 			relatedPosts: [],
-			navbarLock: false
+			navbarLock: false,
+			sidebar: false
 		};
 		this.handleScroll = this.handleScroll.bind( this );
 	}
@@ -134,84 +138,94 @@ class PostDetails extends React.Component {
 		window.scrollTo( 0, 0 );
 	};
 
+	toggleSidebar = () => {
+		this.setState({ sidebar: !this.state.sidebar });
+	};
 
 	render() {
 		return (
-			<div>
-				{/* if there is no image state, pass a loader image to the header */}
-				{ this.state.postInfo.image ?
-					<HeaderComponent
-						postDetails={true}
-						image={`uploads/${this.state.postInfo.image}`}
-						lock={this.state.navbarLock}
-					/>
-				: <HeaderComponent
-					postDetails={true}
-					image="images/loader-image.png"
-					lock={this.state.navbarLock}
-					/>
-				}
-
-				<div style={ styles.wrapper }>
-					<Container style={ styles.container }>
-						<span>
-							{this.state.postInfo.author} {this.state.postInfo.created}
-						</span>
-
-						<Header style={ styles.title }>{this.state.postInfo.title}</Header>
-						<p
-							dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
-							style={ styles.content }
+				<div>
+					{this.state.sidebar &&
+						<SideBar
+							postDetails={true}
+							renderSearch={this.renderSearch}
 						/>
-						{ this.props.isAuthenticated &&
-							<Link to={`/update-post/${this.props.match.params.slug}`}>
-								<Button primary>Update</Button>
-							</Link>
-						}
-					</Container>
-					<Container style={ styles.relatedTitle }>
-						<Header
-							style={{ fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px" }}
-						>
-							Related Posts
-						</Header>
-					</Container>
-					<Container style={ styles.related }>
-						{this.state.relatedPosts.map( (post, index ) =>
+					}
+					{/* if there is no image state, pass a loader image to the header */}
+					{ this.state.postInfo.image ?
+						<HeaderComponent
+							postDetails={true}
+							image={`uploads/${this.state.postInfo.image}`}
+							lock={this.state.navbarLock}
+							toggleSidebar={this.toggleSidebar}
+						/>
+					: <HeaderComponent
+						postDetails={true}
+						image="images/loader-image.png"
+						lock={this.state.navbarLock}
+						/>
+					}
 
-							<Card key={post._id} style={styles.relatedPost}>
-								<Link to={`/post/${post.slug}`}>
-									<Image
-										style={styles.relatedImage}
-										src={require(
-												"../../public/uploads/" + post.image
-										)}
-										alt="Related post"
-									/>
+					<div style={ styles.wrapper }>
+						<Container style={ styles.container } key="1">
+							<span>
+								{this.state.postInfo.author} {this.state.postInfo.created}
+							</span>
+
+							<Header style={ styles.title }>{this.state.postInfo.title}</Header>
+							<p
+								dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
+								style={ styles.content }
+							/>
+							{ this.props.isAuthenticated &&
+								<Link to={`/update-post/${this.props.match.params.slug}`}>
+									<Button primary>Update</Button>
 								</Link>
-								<Card.Content>
-									<Card.Header style={ styles.relatedHeader }>
-										<Link
-											to={`/post/${post.slug}`}
-											style={{ fontFamily: "Roboto, sans-serif" }}
-										>
-											{post.title}
-										</Link>
-									</Card.Header>
-								</Card.Content>
-							</Card>
-						)}
+							}
+						</Container>
+						<Container style={ styles.relatedTitle }>
+							<Header
+								style={{ fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px" }}
+							>
+								Related Posts
+							</Header>
+						</Container>
+						<Container style={ styles.related }>
+							{this.state.relatedPosts.map( (post, index ) =>
 
-					</Container>
+								<Card key={post._id} style={styles.relatedPost}>
+									<Link to={`/post/${post.slug}`}>
+										<Image
+											style={styles.relatedImage}
+											src={require(
+												"../../public/uploads/" + post.image
+											)}
+											alt="Related post"
+										/>
+									</Link>
+									<Card.Content>
+										<Card.Header style={ styles.relatedHeader }>
+											<Link
+												to={`/post/${post.slug}`}
+												style={{ fontFamily: "Roboto, sans-serif" }}
+											>
+												{post.title}
+											</Link>
+										</Card.Header>
+									</Card.Content>
+								</Card>
+							)}
+
+						</Container>
+					</div>
+					{this.state.navbarLock &&
+						<Icon
+							style={styles.topButton}
+							onClick={this.goTop}
+							name="arrow circle up"
+						/>
+					}
 				</div>
-				{this.state.navbarLock &&
-					<Icon
-						style={styles.topButton}
-						onClick={this.goTop}
-						name="arrow circle up"
-					/>
-				}
-			</div>
 		);
 	}
 }
@@ -226,4 +240,4 @@ function mapStateToProps ( state ) {
 	};
 }
 
-export default connect( mapStateToProps )( PostDetails );
+export default connect( mapStateToProps )( Radium( PostDetails ) );
