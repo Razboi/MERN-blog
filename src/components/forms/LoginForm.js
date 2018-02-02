@@ -7,13 +7,13 @@ const styles = {
 	form: {
 		padding: "35px",
 		textAlign: "center",
-		width: "50%",
+		width: "900px",
 		display: "block",
 		margin: "40px auto",
 		borderRadius: "5px"
 	},
 	formInput: {
-		width: "40%",
+		width: "250px",
 		textAlign: "center"
 	},
 	formButton: {
@@ -75,7 +75,10 @@ class LoginForm extends React.Component {
 		const { data, loading, errors, blankError } = this.state;
 		return (
 			<div>
-				<HeaderComponent image="images/code-wallpaper01.jpg" />
+				<HeaderComponent
+					image="images/code-wallpaper01.jpg"
+					toggleSidebar={this.props.toggleSidebar}
+				/>
 				<Form
 					error={errors || blankError}
 					loading={loading}

@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "semantic-ui-react";
 import axios from "axios";
 import HeaderComponent from "../header";
+import SideBar from "../sidebar";
 
 const styles = {
 	form: {
@@ -24,7 +25,8 @@ class NewPostPage extends React.Component {
 			content: "",
 			image: [],
 			categories: "",
-			keywords: ""
+			keywords: "",
+			sidebar: false
 		};
 	}
 
@@ -43,11 +45,21 @@ class NewPostPage extends React.Component {
 		}).catch( err => console.log( err ) );
 	};
 
+	toggleSidebar = () => {
+		this.setState({ sidebar: !this.state.sidebar });
+	};
+
 	render() {
 		const { title, content, image, introduction, categories, keywords } = this.state;
 		return (
 			<div>
-				<HeaderComponent image="images/code-wallpaper01.jpg" />
+				{this.state.sidebar &&
+					<SideBar/>
+				}
+				<HeaderComponent
+					image="images/code-wallpaper01.jpg"
+					toggleSidebar={this.toggleSidebar}
+				/>
 				<Form
 					id="postForm"
 					encType="multipart/form-data"

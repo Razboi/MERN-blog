@@ -167,7 +167,6 @@ class PostDetails extends React.Component {
 					{this.state.sidebar &&
 						<SideBar
 							postDetails={true}
-							renderSearch={this.renderSearch}
 						/>
 					}
 					{/* if there is no image state, pass a loader image to the header */}
