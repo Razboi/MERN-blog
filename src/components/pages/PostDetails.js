@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SideBar from "../sidebar";
-import Radium from "radium";
 import styled from "styled-components";
 
 
@@ -36,6 +35,19 @@ line-height: 33px;
 overflow: hidden;
 @media (max-width: 768px) {
 	font-size: 18px;
+}
+`;
+
+const TopButton = styled.span`
+position: fixed;
+right: 100px;
+bottom: 10px;
+font-size: 40px;
+color: rgba(0, 0, 0, 0.9);
+cursor: pointer;
+@media (max-width: 900px) {
+	right: 0px;
+	font-size: 36px;
 }
 `;
 
@@ -227,11 +239,12 @@ class PostDetails extends React.Component {
 						</Container>
 					</PostWrapper>
 					{this.state.navbarLock &&
-						<Icon
-							style={styles.topButton}
-							onClick={this.goTop}
-							name="arrow circle up"
-						/>
+						<TopButton>
+							<Icon
+								onClick={this.goTop}
+								name="arrow circle up"
+							/>
+						</TopButton>
 					}
 				</div>
 		);
@@ -248,4 +261,4 @@ function mapStateToProps ( state ) {
 	};
 }
 
-export default connect( mapStateToProps )( Radium( PostDetails ) );
+export default connect( mapStateToProps )( PostDetails );

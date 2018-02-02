@@ -35,6 +35,7 @@ class HeaderComponent extends React.Component {
 			backgroundImage: `url(${headerImage})`,
 			"backgroundRepeat": "no-repeat",
 			"backgroundSize": "cover",
+			"backgroundPosition": "center top",
 			"textAlign": "center",
 			"height": this.props.postDetails ? "500px" : "300px",
 			"position": "relative"

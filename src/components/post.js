@@ -2,6 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Image, Grid } from "semantic-ui-react";
 import Radium from "radium";
+import styled from "styled-components";
+
+const ImageWrapper = styled.div`
+	overflow: hidden;
+	height: 296px;
+	width: 100%;
+	@media (max-width: 768px) {
+		height: auto;
+	}
+`;
 
 const styles = {
 	evenPost: {
@@ -47,12 +57,14 @@ const styles = {
 		transition: "transform 4s ease-out"
 	},
 	cardImage: {
-		height: "296px",
-		width: "100%",
 		transition: "transform 6s ease",
-		overflow: "hidden"
+		overflow: "hidden",
+		height: "100%",
+		width: "100%"
 	},
 	cardImageContainer: {
+		height: "296px",
+		width: "100%",
 		overflow: "hidden"
 	},
 	gridImage: {
@@ -131,13 +143,13 @@ class Post extends React.Component {
 					onMouseEnter={this.onMouseIn}
 					onMouseLeave={this.onMouseOut}>
 					<Link to={`/post/${this.props.slug}`}>
-						<div style={styles.cardImageContainer}>
+						<ImageWrapper>
 							<Image
 								src={require("../public/uploads/" + this.props.image )}
 								style={{ ...styles.cardImage,
 								transform: "scale(" + this.state.scale + ")" }}
 							/>
-						</div>
+						</ImageWrapper>
 					</Link>
 					<Card.Content style={ styles.content }>
 						<Link to={`/post/${this.props.slug}`}>

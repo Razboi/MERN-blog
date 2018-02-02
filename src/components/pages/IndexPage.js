@@ -7,6 +7,20 @@ import PropTypes from "prop-types";
 import {Button, Icon } from "semantic-ui-react";
 import Radium from "radium";
 import SideBar from "../sidebar";
+import styled from "styled-components";
+
+const TopButton = styled.span`
+position: fixed;
+right: 100px;
+bottom: 10px;
+font-size: 40px;
+color: rgba(0, 0, 0, 0.9);
+cursor: pointer;
+@media (max-width: 900px) {
+	right: 0px;
+	font-size: 36px;
+}
+`;
 
 const styles = {
 	index: {
@@ -53,14 +67,6 @@ const styles = {
 		left: "0px",
 		margin: "0px",
 		borderRadius: "0px"
-	},
-	topButton: {
-		position: "fixed",
-		right: "100px",
-		bottom: "10px",
-		fontSize: "40px",
-		color: "#000",
-		cursor: "pointer"
 	},
 	backArrow: {
 		position: "absolute",
@@ -340,16 +346,17 @@ class IndexPage extends React.Component {
 							}
 
 						</div>
-				</div>
+					</div>
 
 				</div>
 
-				{this.state.navbarLock && window.matchMedia("(min-width: 900px)").matches &&
-					<Icon
-						style={styles.topButton}
-						onClick={this.goTop}
-						name="arrow circle up"
-					/>
+				{this.state.navbarLock &&
+					<TopButton>
+						<Icon
+							onClick={this.goTop}
+							name="arrow circle up"
+						/>
+					</TopButton>
 				}
 			</div>
 		);
