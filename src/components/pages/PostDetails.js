@@ -1,12 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Button, Container, Header, Card, Image, Icon } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import HeaderComponent from "../header";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import SideBar from "../sidebar";
 import styled from "styled-components";
+import RelatedPosts from "../relatedPosts.js";
 
 
 const ContainerWrapper = styled.div`
@@ -51,50 +52,21 @@ cursor: pointer;
 }
 `;
 
-const styles = {
-	title: {
-		fontSize: "37px",
-		textAlign: "center",
-		color: "#005b96",
-		fontFamily: "Roboto Condensed, sans-serif"
-	},
-	related: {
-		background: "#fff",
-		border: "1px solid #D3D3D3",
-		padding: "10px",
-		overflowX: "scroll",
-		whiteSpace: "nowrap"
-	},
-	relatedPost: {
-		display: "inline-block",
-		margin: "0px 10px"
-	},
-	relatedHeader: {
-		fontSize: "17.5px",
-		overflow: "hidden",
-		whiteSpace: "normal",
-		height: "55px"
-	},
-	relatedImage: {
-		height: "163.13px",
-		width: "290px"
-	},
-	relatedTitle: {
-		marginTop: "50px",
-		textAlign: "center",
-		padding: "7px 0px 2px 0px",
-		background: "#005b96",
-		fontFamily: "Roboto Condensed, sans-serif"
-	},
-	topButton: {
-		position: "fixed",
-		right: "100px",
-		bottom: "10px",
-		fontSize: "40px",
-		color: "#000",
-		cursor: "pointer"
-	}
-};
+const AuthorAndDate = styled.span`
+	font-weight: bold;
+	margin-left: 20px;
+`;
+
+const Title = styled.span`
+font-size: 37px;
+text-align: center;
+color: #005b96;
+font-family: Roboto Condensed, sans-serif;
+font-weight: bold;
+margin: 60px 0px 0px 0px;
+display: block;
+line-height: 1.5;
+`;
 
 class PostDetails extends React.Component {
 	constructor() {
@@ -130,6 +102,7 @@ class PostDetails extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		if ( nextProps.location.pathname !== this.props.location.pathname ) {
+			this.goTop();
 			axios.get("/api/post/" + nextProps.match.params.slug ).then( ( response ) => {
 				this.setState({ postInfo: response.data });
 			}).catch( err => console.log( err ) );
@@ -186,11 +159,14 @@ class PostDetails extends React.Component {
 
 					<PostWrapper>
 						<ContainerWrapper>
-							<span>
-								{this.state.postInfo.author} {this.state.postInfo.created}
-							</span>
+							<AuthorAndDate>
+								<Icon name="user circle" size="large" />{this.state.postInfo.author}
+							</AuthorAndDate>
+							<AuthorAndDate>
+								<Icon name="time" size="large" />{this.state.postInfo.created}
+							</AuthorAndDate>
 
-							<Header style={ styles.title }>{this.state.postInfo.title}</Header>
+							<Title>{this.state.postInfo.title}</Title>
 							<Content
 								dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
 							/>
@@ -200,43 +176,11 @@ class PostDetails extends React.Component {
 								</Link>
 							}
 						</ContainerWrapper>
-						<Container style={ styles.relatedTitle }>
-							<Header
-								style={{
-									fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px"
-								}}
-							>
-								Related Posts
-							</Header>
-						</Container>
-						<Container style={ styles.related }>
-							{this.state.relatedPosts.map( (post, index ) =>
-
-								<Card key={post._id} style={styles.relatedPost}>
-									<Link to={`/post/${post.slug}`}>
-										<Image
-											style={styles.relatedImage}
-											src={require(
-												"../../public/uploads/" + post.image
-											)}
-											alt="Related post"
-										/>
-									</Link>
-									<Card.Content>
-										<Card.Header style={ styles.relatedHeader }>
-											<Link
-												to={`/post/${post.slug}`}
-												style={{ fontFamily: "Roboto, sans-serif" }}
-											>
-												{post.title}
-											</Link>
-										</Card.Header>
-									</Card.Content>
-								</Card>
-							)}
-
-						</Container>
+						<RelatedPosts
+							relatedPosts={this.state.relatedPosts}
+						/>
 					</PostWrapper>
+
 					{this.state.navbarLock &&
 						<TopButton>
 							<Icon

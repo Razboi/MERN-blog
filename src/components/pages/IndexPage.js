@@ -183,12 +183,14 @@ class IndexPage extends React.Component {
 			});
 			this.props.history.replace({ state: {} });
 		}
+		this.goTop();
 		this.onWindowResize();
 	}
 
 // every time the component updates if the page number has changed we get the new posts
 	componentDidUpdate(prevProps, prevState) {
 		if ( this.state.pageNum !== prevState.pageNum ) {
+			this.goTop();
 			// if there's a search get more searched posts, else get more posts
 			this.state.searchPosts.length > 0 ? this.getSearchPosts() : this.getPosts();
 		}
@@ -196,6 +198,7 @@ class IndexPage extends React.Component {
 
 // set the search results as searchPosts
 	renderSearch = (posts, category, count, search) => {
+		this.goTop();
 		this.clearState();
 		this.setState({
 			searchPosts: posts,
