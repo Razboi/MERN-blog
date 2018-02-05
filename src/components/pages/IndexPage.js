@@ -22,67 +22,64 @@ cursor: pointer;
 }
 `;
 
-const styles = {
-	index: {
-		padding: "30px 0px",
-		display: "flex",
-		"flexWrap": "wrap",
-		"overflow": "hidden",
-		"justifyContent": "center",
-		"backgroundColor": "#f4f2f0",
-		position: "relative"
-	},
-	postsContainer: {
-		width: "70%",
-		"display": "flex",
-		"flexWrap": "wrap",
-		"justifyContent": "center",
-		position: "relative",
-		paddingBottom: "60px"
-	},
-	categoryLabel: {
-		background: "#000",
-		position: "absolute",
-		top: "10px",
-		padding: "3px 10px",
-		color: "#fff",
-		cursor: "pointer"
-	},
-	labelIcon: {
-		fontSize: "15px",
-		color: "#fff",
-		margin: "0px",
-		marginLeft: "4px"
-	},
-	nextPage: {
-		position: "absolute",
-		bottom: "0px",
-		right: "0px",
-		margin: "0px",
-		borderRadius: "0px"
-	},
-	prevPage: {
-		position: "absolute",
-		bottom: "0px",
-		left: "0px",
-		margin: "0px",
-		borderRadius: "0px"
-	},
-	backArrow: {
-		position: "absolute",
-		left: "15%",
-		top: "15px",
-		cursor: "pointer"
-	},
-	backArrowIcon: {
-		fontSize: "33px"
-	},
-	sidebarWrapper: {
-		border: "none",
-		borderRadius: "0px"
-	}
-};
+const Index = styled.div`
+padding: 30px 0px;
+display: flex;
+flex-wrap: wrap;
+overflow: hidden;
+justify-content: center;
+background-color: #f4f2f0;
+position: relative;
+`;
 
+const PostContainer = styled.div`
+width: 70%;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+position: relative;
+padding-bottom: 60px;
+@media (max-width: 425px) {
+	width: 100%;
+}
+`;
+
+const CategoryLabel = styled.span`
+background: #000;
+position: absolute;
+top: 10px;
+padding: 3px 10px;
+color: #fff;
+cursor: pointer;
+`;
+
+const LabelIconStyle = styled.span`
+font-size: 14px;
+color: #fff;
+margin: 0px;
+margin-left: 4px;
+`;
+
+const NextPageButton = styled.span`
+position: absolute;
+bottom: 0px;
+right: 0px;
+`;
+
+const PrevPageButton = styled.span`
+position: absolute;
+bottom: 0px;
+left: 0px;
+`;
+
+const BackArrow = styled.div`
+position: absolute;
+left: 15%;
+top: 15px;
+cursor: pointer;
+z-index: 2;
+font-size: 22px;
+`;
 
 // if you need to use any lifecycle events or set any state you should use class.
 // Otherwise a function can be used for a simpler syntax
@@ -260,35 +257,28 @@ class IndexPage extends React.Component {
 						toggleSidebar={this.toggleSidebar}
 					/>
 
-					<div style={styles.index} onClick={this.handleClickOutside}>
+					<Index onClick={this.handleClickOutside}>
 						{ (this.state.category || this.state.search) &&
-
-							<div style={styles.backArrow} onClick={this.clearSearch}>
+							<BackArrow onClick={this.clearSearch}>
 								<Icon
-									style={styles.backArrowIcon}
 									name="arrow circle outline left"
 									size="large"
 								/>
-							</div>
-
-
+							</BackArrow>
 						}
+
 						{ this.state.category &&
-							<span style={styles.categoryLabel} onClick={this.clearSearch}>
+							<CategoryLabel onClick={this.clearSearch}>
 								{this.state.category}
-								<Icon style={styles.labelIcon} name="close" size="large" />
-							</span>
+								<LabelIconStyle>
+									<Icon name="close" size="large" />
+								</LabelIconStyle>
+							</CategoryLabel>
 						}
 
-						<div
-							style={ this.state.smallDevice ?
-									styles.postsContainerSmall
-							:
-									styles.postsContainer
-							}>
+						<PostContainer>
 							{this.state.searchPosts.length > 0 ?
 								this.state.searchPosts.map( (post, index) =>
-
 									<Post
 										key={post._id}
 										title={post.title}
@@ -298,11 +288,9 @@ class IndexPage extends React.Component {
 										index={index}
 										smallDevice={this.state.smallDevice}
 									/>
-
 								)
 							:
 							this.state.posts.map( (post, index) =>
-
 								<Post
 									key={post._id}
 									title={post.title}
@@ -312,44 +300,34 @@ class IndexPage extends React.Component {
 									index={index}
 									smallDevice={this.state.smallDevice}
 								/>
-
 							)
 							}
-							{this.state.pageNum < this.state.maxPages ?
+							<NextPageButton>
 								<Button
+									disabled={this.state.pageNum === this.state.maxPages}
 									primary
-									style={styles.nextPage}
+									style={{
+										margin: "0px",
+										borderRadius: "0px"
+									}}
 									onClick={this.nextPage}
 									content="Next Page"
 								/>
-							:
-							<Button
-								disabled
-								primary
-								style={styles.nextPage}
-								onClick={this.nextPage}
-								content="Next Page"
-							/>
-							}
-							{this.state.pageNum > 1 ?
+							</NextPageButton>
+							<PrevPageButton>
 								<Button
 									primary
-									style={styles.prevPage}
+									disabled={this.state.pageNum === 1}
+									style={{
+										margin: "0px",
+										borderRadius: "0px"
+									}}
 									onClick={this.prevPage}
 									content="Previous Page"
 								/>
-							:
-							<Button
-								primary
-								disabled
-								style={styles.prevPage}
-								onClick={this.prevPage}
-								content="Previous Page"
-							/>
-							}
-
-						</div>
-					</div>
+							</PrevPageButton>
+						</PostContainer>
+					</Index>
 
 				</div>
 
