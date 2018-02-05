@@ -1,18 +1,23 @@
 import React from "react";
 import axios from "axios";
 import { Form } from "semantic-ui-react";
+import styled from "styled-components";
 
-const styles = {
-	form: {
-		"textAlign": "center",
-		"paddingTop": "80px"
-	},
-	inputs: {
-		"width": "50%",
-		"textAlign": "left",
-		"marginBottom": "20px"
-	}
-};
+const StyledForm = styled( Form )`
+text-align: center;
+padding-top: 80px;
+`;
+
+const StyledInput = styled.div`
+width: 50%;
+text-align: left;
+margin-bottom: 20px;
+margin: 20px auto;
+@media (max-width: 900px) {
+	width: 100%;
+	padding: 0px 5px;
+}
+`;
 
 class UpdateForm extends React.Component {
 
@@ -28,73 +33,68 @@ class UpdateForm extends React.Component {
 
 	render() {
 		return (
-				<Form
+			<div>
+				<StyledForm
 					id="updateForm"
 					encType="multipart/form-data"
-					style={ styles.form }
 					onSubmit={this.onSubmit}
 				>
-					<div>
+					<StyledInput>
 						<Form.Input
 							label=""
 							placeholder="Title"
 							name="title"
 							value={this.props.postInfo.title}
 							onChange={this.props.onChange}
-							style={ styles.inputs }
 						/>
-					</div>
-					<div>
+					</StyledInput>
+					<StyledInput>
 						<Form.Input
 							label=""
 							placeholder="Categories"
 							name="categories"
 							value={this.props.postInfo.categories}
 							onChange={this.props.onChange}
-							style={ styles.inputs }
 						/>
-					</div>
-					<div>
+					</StyledInput>
+					<StyledInput>
 						<Form.Input
 							label=""
 							placeholder="Search keywords separated by commas"
 							name="keywords"
 							value={this.props.postInfo.keywords}
 							onChange={this.props.onChange}
-							style={ styles.inputs }
 						/>
-					</div>
-					<div>
+					</StyledInput>
+					<StyledInput>
 						<Form.TextArea
 							label=""
 							placeholder="Introduction"
 							name="introduction"
 							value={this.props.postInfo.introduction}
 							onChange={this.props.onChange}
-							style={ styles.inputs }
 						/>
-					</div>
-					<div>
+					</StyledInput>
+					<StyledInput>
 						<Form.TextArea
 							label=""
 							placeholder="Content"
 							name="content"
 							value={this.props.postInfo.content}
 							onChange={this.props.onChange}
-							style={ styles.inputs }
 						/>
-					</div>
-					<div>
+					</StyledInput>
+					<StyledInput>
 						<input
 							type="file"
 							label=""
 							name="updatedImage"
 							onChange={this.props.onChange}
-							style={ styles.inputs }
 						/>
-					</div>
+					</StyledInput>
 					<Form.Button primary>Update</Form.Button>
-				</Form>
+				</StyledForm>
+			</div>
 		);
 	}
 }

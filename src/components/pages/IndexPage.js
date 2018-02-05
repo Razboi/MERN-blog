@@ -8,19 +8,7 @@ import {Button, Icon } from "semantic-ui-react";
 import Radium from "radium";
 import SideBar from "../sidebar";
 import styled from "styled-components";
-
-const TopButton = styled.span`
-position: fixed;
-right: 100px;
-bottom: 10px;
-font-size: 40px;
-color: rgba(0, 0, 0, 0.9);
-cursor: pointer;
-@media (max-width: 900px) {
-	right: 0px;
-	font-size: 36px;
-}
-`;
+import TopButton from "../topButton";
 
 const Index = styled.div`
 padding: 30px 0px;
@@ -332,12 +320,9 @@ class IndexPage extends React.Component {
 				</div>
 
 				{this.state.navbarLock &&
-					<TopButton>
-						<Icon
-							onClick={this.goTop}
-							name="arrow circle up"
-						/>
-					</TopButton>
+					<TopButton
+						goTop={this.goTop}
+					/>
 				}
 			</div>
 		);

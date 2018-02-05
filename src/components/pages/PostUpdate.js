@@ -1,12 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Header, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import HeaderComponent from "../header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import UpdateForm from "../forms/UpdateForm";
 import SideBar from "../sidebar";
 import styled from "styled-components";
+import TopButton from "../topButton";
 
 
 const ContainerWrapper = styled.div`
@@ -38,50 +39,22 @@ overflow: hidden;
 }
 `;
 
-const TopButton = styled.span`
-position: fixed;
-right: 100px;
-bottom: 10px;
-font-size: 40px;
-color: rgba(0, 0, 0, 0.9);
-cursor: pointer;
-@media (max-width: 900px) {
-	right: 0px;
-	font-size: 36px;
-}
+const AuthorAndDate = styled.span`
+	font-weight: bold;
+	margin-left: 20px;
 `;
 
-const styles = {
-	wrapper: {
-		fontSize: "18px",
-		textAlign: "justify",
-		"background": "#f4f2f0",
-		position: "relative",
-		top: "0px",
-		paddingBottom: "70px",
-		paddingTop: "30px"
-	},
-	container: {
-		padding: "80px 100px",
-		width: "43em",
-		"background": "#f9f8f7",
-		borderRadius: "0px",
-		fontFamily: "Roboto, sans-serif",
-		fontSize: "21px",
-		boxShadow: "0px 0px 40px 2px #D3D3D3"
-	},
-	content: {
-		marginTop: "60px",
-		lineHeighy: "33px",
-		overflow: "hidden"
-	},
-	title: {
-		fontSize: "37px",
-		textAlign: "center",
-		color: "#005b96",
-		fontFamily: "Roboto Condensed, sans-serif"
-	}
-};
+const Title = styled.span`
+font-size: 37px;
+text-align: center;
+color: #005b96;
+font-family: Roboto Condensed, sans-serif;
+font-weight: bold;
+margin: 60px 0px 0px 0px;
+display: block;
+line-height: 1.5;
+`;
+
 
 class PostUpdates extends React.Component {
 	constructor() {
@@ -182,11 +155,14 @@ onChange = (e) => {
 
 					<PostWrapper>
 						<ContainerWrapper>
-							<span>
-								{this.state.postInfo.author} {this.state.postInfo.created}
-							</span>
+							<AuthorAndDate>
+								<Icon name="user circle" size="large" />{this.state.postInfo.author}
+							</AuthorAndDate>
+							<AuthorAndDate>
+								<Icon name="time" size="large" />{this.state.postInfo.created}
+							</AuthorAndDate>
 
-							<Header style={ styles.title }>{this.state.postInfo.title}</Header>
+							<Title>{this.state.postInfo.title}</Title>
 							<Content
 								dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
 							/>
@@ -195,12 +171,7 @@ onChange = (e) => {
 						<UpdateForm onChange={this.onChange} postInfo={this.state.postInfo}/>
 					</PostWrapper>
 					{this.state.navbarLock &&
-						<TopButton>
-							<Icon
-								onClick={this.goTop}
-								name="arrow circle up"
-							/>
-						</TopButton>
+						<TopButton goTop={this.goTop} />
 					}
 				</div>
 		);

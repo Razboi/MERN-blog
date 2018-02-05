@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import SideBar from "../sidebar";
 import styled from "styled-components";
 import RelatedPosts from "../relatedPosts.js";
+import TopButton from "../topButton";
 
 
 const ContainerWrapper = styled.div`
@@ -36,19 +37,6 @@ line-height: 33px;
 overflow: hidden;
 @media (max-width: 768px) {
 	font-size: 18px;
-}
-`;
-
-const TopButton = styled.span`
-position: fixed;
-right: 100px;
-bottom: 10px;
-font-size: 40px;
-color: rgba(0, 0, 0, 0.9);
-cursor: pointer;
-@media (max-width: 900px) {
-	right: 0px;
-	font-size: 36px;
 }
 `;
 
@@ -182,12 +170,9 @@ class PostDetails extends React.Component {
 					</PostWrapper>
 
 					{this.state.navbarLock &&
-						<TopButton>
-							<Icon
-								onClick={this.goTop}
-								name="arrow circle up"
-							/>
-						</TopButton>
+						<TopButton
+							goTop={this.goTop}
+						/>
 					}
 				</div>
 		);
