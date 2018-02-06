@@ -17,8 +17,8 @@ padding: 3px 30px;
 border-radius: 0px;
 border: 1px solid #fff;
 font-family: Roboto Slab, serif;
-@media (max-width: 550px): {
-	padding: 3px 20px;
+@media (max-width: 550px) {
+	padding: 3px 25px;
 }
 `;
 

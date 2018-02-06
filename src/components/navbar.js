@@ -1,70 +1,67 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {Icon} from "semantic-ui-react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
-import Radium from "radium";
+import styled from "styled-components";
 
-const styles = {
-	navbar: {
-		"backgroundColor": "rgba(0, 0, 0, 0.7)",
-		"padding": "10px",
-		"width": "100%",
-		zIndex: "3"
-	},
-	sidebarButton: {
-		display: "none",
-		"@media screen and (max-width: 900px)": {
-			display: "inline",
-			float: "right",
-			marginRight: "10px"
-		}
-	},
-	rightMenu: {
-		"float": "right",
-		marginRight: "25px",
-		"@media screen and (max-width: 900px)": {
-			display: "none"
-		}
-	},
-	searchWrapper: {
-		"float": "right",
-		marginRight: "25px",
-		"@media screen and (max-width: 900px)": {
-			"float": "left",
-			"margin": "0px 0px 0px 25px"
-		}
-	},
-	leftMenu: {
-		"float": "left",
-		"@media screen and (max-width: 900px)": {
-			display: "none"
-		}
-	},
-	categories: {
-		color: "#fff",
-		marginLeft: "25px",
-		fontSize: "19px",
-		fontWeight: "bold",
-		cursor: "pointer",
-		fontFamily: "Roboto, sans-serif"
-	},
-	search: {
-		background: "transparent",
-		borderWidth: "0px 0px 1px 0px",
-		borderColor: "#fff",
-		color: "#fff",
-		padding: "5px"
-	},
-	buttons: {
-		color: "#fff",
-		marginRight: "8px",
-		cursor: "pointer"
-	}
-};
+const SidebarButton = styled.div`
+display: none;
+@media (max-width: 900px) {
+	display: inline;
+	float: right;
+	margin-right: 10px;
+}
+`;
+
+const RightMenu = styled.div`
+float: right;
+margin-right: 25px;
+@media (max-width: 900px) {
+	display: none;
+}
+`;
+
+const SearchWrapper = styled.div`
+float: right;
+margin-right: 25px;
+@media (max-width: 900px) {
+	float: left;
+	margin: 0px 0px 0px 25px;
+}
+`;
+
+const SearchBar = styled.input`
+background: transparent;
+border-width: 0px 0px 1px 0px;
+border-color: #fff;
+color: #fff;
+padding: 5px;
+`;
+
+const LeftMenu = styled.div`
+float: left;
+@media (max-width: 900px) {
+	display: none;
+}
+`;
+
+const Category = styled.span`
+color: #fff;
+margin-left: 25px;
+font-size: 19px;
+font-weight: bold;
+cursor: pointer;
+font-family: Roboto, sans-serif;
+`;
+
+const StyledIcon = styled( Icon )`
+color: #fff;
+margin-right: 8px;
+cursor: pointer;
+`;
 
 class NavBar extends React.Component {
 	constructor() {
@@ -140,79 +137,68 @@ class NavBar extends React.Component {
 	};
 
 	render() {
+		const Navbar = styled.nav`
+		background-color: rgba(0, 0, 0, 0.7);
+		padding: 10px;
+		width: 100%;
+		z-index: 3;
+		position: ${props => this.props.lock ? "fixed" : "absolute"};
+		top: ${props => this.props.lock && "0px"};
+		bottom: ${props => !this.props.lock && "0px"};
+		`;
 		return (
-			<nav id="navbar" style={ this.props.lock ?
-				{ ...styles.navbar, position: "fixed", top: "0px" }
-			:
-			{ ...styles.navbar, position: "absolute", bottom: "0px" }
-			}>
-				<div style={styles.leftMenu}>
-					<span
-						style={styles.categories}
-						onClick={() => this.filterCategory( "pentesting" )}
-					>
+			<Navbar id="navbar">
+				<LeftMenu>
+					<Category onClick={() => this.filterCategory( "pentesting" )}>
 						Pentesting
-					</span>
-					<span
-						style={styles.categories}
-						onClick={() => this.filterCategory( "linux" )}
-					>
+					</Category>
+					<Category onClick={() => this.filterCategory( "linux" )}>
 						Linux
-					</span>
-					<span
-						style={styles.categories}
-						onClick={() => this.filterCategory( "programming" )}
-					>
+					</Category>
+					<Category onClick={() => this.filterCategory( "programming" )}>
 						Programming
-					</span>
-					<span
-						style={styles.categories}
-						onClick={() => this.filterCategory( "raspberry" )}
-					>
+					</Category>
+					<Category onClick={() => this.filterCategory( "raspberry" )}>
 						Raspberry Pi
-					</span>
-				</div>
-				<div style={styles.sidebarButton} onClick={this.props.toggleSidebar}>
-					<Icon
-						style={styles.buttons}
+					</Category>
+				</LeftMenu>
+				<SidebarButton onClick={this.props.toggleSidebar}>
+					<StyledIcon
 						name="bars"
 						size="large"
 					/>
-				</div>
-				<div style={styles.searchWrapper}>
+				</SidebarButton>
+				<SearchWrapper>
 					<form onSubmit={this.onSubmit}>
-						<input
-							style={styles.search}
+						<SearchBar
 							type="text"
 							placeholder="Search"
 							name="search"
 							value={this.state.search}
 							onChange={this.onChange}
 						/>
-						<Icon
+						<StyledIcon
 							onClick={this.onSubmit}
-							style={styles.buttons}
 							name="search"
 							size="large"
 						/>
 					</form>
-				</div>
+				</SearchWrapper>
 
 				{this.props.isAuthenticated &&
-					<div style={styles.rightMenu}>
-						<Link style={styles.buttons} to="/new-post">
-							<Icon name="write square" size="large" />
+					<RightMenu>
+						<Link to="/new-post">
+							<StyledIcon name="write square" size="large" />
 						</Link>
 
-						<Icon
-							style={styles.buttons}
+						<StyledIcon
 							onClick={this.props.logout}
 							name="sign out"
 							size="large"
 						/>
-					</div>
+					</RightMenu>
 				}
-			</nav>
+			</Navbar>
 		);
 	}
 }
@@ -231,4 +217,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default withRouter( connect( mapStateToProps, { logout })( Radium( NavBar ) ) );
+export default withRouter( connect( mapStateToProps, { logout })( NavBar ) );
