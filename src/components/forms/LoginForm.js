@@ -2,27 +2,26 @@ import React from "react";
 import { Form, Message } from "semantic-ui-react";
 import HeaderComponent from "../header";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
-const styles = {
-	form: {
-		padding: "35px",
-		textAlign: "center",
-		width: "900px",
-		display: "block",
-		margin: "40px auto",
-		borderRadius: "5px"
-	},
-	formInput: {
-		width: "250px",
-		textAlign: "center"
-	},
-	formButton: {
-		marginTop: "20px"
-	},
-	errorWarning: {
-		textAlign: "left"
-	}
-};
+const StyledForm = styled( Form )`
+padding: 35px;
+text-align: center;
+width: 900px;
+display: block;
+margin: 40px auto;
+border-radius: 5px;
+`;
+
+const StyledInput = styled.div`
+width: 250px;
+text-align: center;
+margin: 20px auto;
+`;
+
+const ErrorMessage = styled( Message )`
+	text-align: left
+`;
 
 class LoginForm extends React.Component {
 	constructor() {
@@ -79,24 +78,21 @@ class LoginForm extends React.Component {
 					image="images/code-wallpaper01.jpg"
 					toggleSidebar={this.props.toggleSidebar}
 				/>
-				<Form
+				<StyledForm
 					error={errors || blankError}
 					loading={loading}
 					id="loginForm"
-					style={styles.form}
 					encType="multipart/form-data"
 					onSubmit={this.onSubmit}
 				>
 					{ blankError ?
-						<Message
-							style={styles.errorWarning}
+						<ErrorMessage
 							error
 							header="Fields can't be blank"
 							content="All fields are required."
 						/>
 					:
-					<Message
-						style={styles.errorWarning}
+					<ErrorMessage
 						error
 						header="Invalid credentials"
 						content="Please check that your credentials are correct and try again."
@@ -104,29 +100,27 @@ class LoginForm extends React.Component {
 					}
 
 					<h2>Login Form</h2>
-					<div>
+					<StyledInput>
 						<Form.Input
-							style={styles.formInput}
 							label=""
 							placeholder="Username"
 							name="username"
 							value={data.username}
 							onChange={this.onChange}
 						/>
-					</div>
-					<div>
+					</StyledInput>
+					<StyledInput>
 						<Form.Input
 							type="password"
-							style={styles.formInput}
 							label=""
 							placeholder="Password"
 							name="password"
 							value={data.password}
 							onChange={this.onChange}
 						/>
-					</div>
-					<Form.Button primary style={styles.formButton}>Login</Form.Button>
-				</Form>
+					</StyledInput>
+					<Form.Button primary>Login</Form.Button>
+				</StyledForm>
 				</div>
 		);
 	}

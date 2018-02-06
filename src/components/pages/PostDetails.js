@@ -77,6 +77,7 @@ class PostDetails extends React.Component {
 	};
 
 	componentWillMount() {
+		this.goTop();
 		axios.get("/api/post/" + this.props.match.params.slug ).then( ( response ) => {
 			this.setState({ postInfo: response.data });
 		}).catch( err => console.log( err ) );
