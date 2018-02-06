@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, Image, Grid } from "semantic-ui-react";
-import Radium from "radium";
 import styled from "styled-components";
 
 const ImageWrapper = styled.div`
@@ -13,93 +12,82 @@ const ImageWrapper = styled.div`
 	}
 `;
 
-const styles = {
-	evenPost: {
-		"flex": "1 1 40%",
-		"margin": "20px 15px",
-		"@media screen and (max-width: 1200px)": {
-			"flex": "1 1 100%"
-		},
-		"@media screen and (min-width: 768px) and (max-width: 900px)": {
-			"padding": "0px 70px"
-		},
-		"@media screen and (min-width: 900px) and (max-width: 1200px)": {
-			"padding": "0px 150px"
-		}
-	},
-	oddPost: {
-		flex: "1 1 100%",
-		backgroundColor: "#fff",
-		padding: "15px",
-		margin: "20px 15px",
-		border: "1px solid #D3D3D3"
-	},
-	content: {
-		padding: "15px"
-	},
-	description: {
-		marginTop: "10px",
-		fontFamily: "Roboto, sans-serif",
-		color: "#383838",
-		fontSize: "15.5px"
-	},
-	oddDescription: {
-		marginTop: "40px",
-		fontFamily: "Roboto, sans-serif",
-		color: "#383838",
-		fontSize: "15.5px"
-	},
-	card: {
-		width: "100%",
-		height: "100%"
-	},
-	image: {
-		transition: "transform 4s ease-out"
-	},
-	cardImage: {
-		transition: "transform 6s ease",
-		overflow: "hidden",
-		height: "100%",
-		width: "100%"
-	},
-	cardImageContainer: {
-		height: "296px",
-		width: "100%",
-		overflow: "hidden"
-	},
-	gridImage: {
-		overflow: "hidden"
-	}
+const EvenPostWrapper = styled.div`
+flex: 1 1 40%;
+margin: 20px 15px;
+@media (max-width: 1200px) {
+	flex: 1 1 100%;
 };
+@media (min-width: 768px) and (max-width: 900px) {
+	padding: 0px 70px;
+};
+@media (min-width: 900px) and (max-width: 1200px) {
+	padding: 0px 150px;
+};
+`;
+
+const OddPostWrapper = styled.div`
+flex: 1 1 100%;
+background-color: #fff;
+padding: 15px;
+margin: 20px 15px;
+border: 1px solid #D3D3D3;
+`;
+
+const Description = styled( Card.Description )`
+margin-top: 10px;
+font-family: Roboto, sans-serif;
+color: #383838 !important;
+font-size: 15.5px;
+`;
+
+const OddDescription = styled.p`
+margin-top: 40px;
+font-family: Roboto, sans-serif;
+color: #383838;
+font-size: 15.5px;
+`;
+
+const CardImage = styled( Image )`
+transition: transform 6s ease;
+overflow: hidden;
+height: 100%;
+width: 100%;
+`;
+
+const CardPost = styled( Card )`
+width: 100% !important;
+height: 100%;
+:hover {
+	box-shadow: 0px 0px 5px 1px #23769b !important;
+};
+:hover ${CardImage} {
+	transform: scale(1.3);
+}
+`;
+
+const OddPostImage = styled( Image )`
+	transition: transform 4s ease-out;
+	transform: scale(1);
+`;
+
+const OddImageWrapper = styled( Grid.Column )`
+	overflow: hidden;
+`;
+
+const EvenPost = styled( Grid )`
+:hover {
+	box-shadow: 0px 0px 5px 1px #23769b !important;
+};
+:hover ${OddPostImage} {
+	transform: scale(1.3);
+}
+`;
 
 /* for mantaining state you need a class that extends the React.Component.
 on this class the props requires this. because props its no longer being passed,
 so the only way to access it is as a property of the Post object. */
 class Post extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-			scale: 1,
-			gridShadow: null
-		};
-	}
-// used to change style states on hoverIn and hoverOut
-	onMouseIn = () => {
-		this.setState({
-			// if the scale is bigger than one set it to one, else augment it
-			scale: 1.3,
-			gridShadow: "0px 0px 5px 1px #23769b"
-		});
-	};
-
-	onMouseOut = () => {
-		this.setState({
-			// if the scale is bigger than one set it to one, else augment it
-			scale: 1,
-			gridShadow: null
-		});
-	};
-
 	render() {
 		var post = null;
 		var isOdd = false;
@@ -108,11 +96,7 @@ class Post extends React.Component {
 		if ( ( this.props.index ) % 3 === 0 && !this.props.smallDevice ) {
 			isOdd = true;
 			post = (
-					<Grid
-						style={{ boxShadow: this.state.gridShadow }}
-						onMouseEnter={this.onMouseIn}
-						onMouseLeave={this.onMouseOut}
-					>
+					<EvenPost>
 
 						<Grid.Column width={10}>
 							<Link to={`/post/${this.props.slug}`}>
@@ -120,38 +104,33 @@ class Post extends React.Component {
 									{ this.props.title }
 								</h2>
 							</Link>
-							<p style={ styles.oddDescription }>
+							<OddDescription>
 								{this.props.introduction}
-							</p>
+							</OddDescription>
 
 						</Grid.Column>
-						<Grid.Column style={ styles.gridImage } width={6}>
+						<OddImageWrapper width={6}>
 							<Link to={`/post/${this.props.slug}`}>
-								<Image
-									style={{ ...styles.image,
-									transform: "scale(" + this.state.scale + ")" }}
+								<OddPostImage
 									src={require("../public/uploads/" + this.props.image )}
 								/>
 							</Link>
-						</Grid.Column>
+						</OddImageWrapper>
 
-					</Grid>
+					</EvenPost>
 			);
 		} else {
 			post = (
-				<Card style={{ ...styles.card, boxShadow: this.state.gridShadow }}
-					onMouseEnter={this.onMouseIn}
-					onMouseLeave={this.onMouseOut}>
+				<CardPost>
 					<Link to={`/post/${this.props.slug}`}>
 						<ImageWrapper>
-							<Image
+							<CardImage
+								id="CardImage"
 								src={require("../public/uploads/" + this.props.image )}
-								style={{ ...styles.cardImage,
-								transform: "scale(" + this.state.scale + ")" }}
 							/>
 						</ImageWrapper>
 					</Link>
-					<Card.Content style={ styles.content }>
+					<Card.Content>
 						<Link to={`/post/${this.props.slug}`}>
 							<Card.Header>
 								<h2 style={{ fontFamily: "Roboto Condensed, sans-serif" }}>
@@ -159,20 +138,20 @@ class Post extends React.Component {
 								</h2>
 							</Card.Header>
 						</Link>
-							<Card.Description style={ styles.description }>
-								{this.props.introduction}
-							</Card.Description>
-						</Card.Content>
+						<Description>
+							{this.props.introduction}
+						</Description>
+					</Card.Content>
 
-				</Card>
+				</CardPost>
 			);
 		}
-		return (
-			<article style={ isOdd ? styles.oddPost : styles.evenPost }>
-				{ post }
-			</article>
-		);
+
+		if ( isOdd ) {
+			return (<OddPostWrapper>{ post }</OddPostWrapper>);
+		}
+			return (<EvenPostWrapper>{ post }</EvenPostWrapper>);
 	}
 }
 
-export default Radium( Post );
+export default Post;
