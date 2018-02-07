@@ -3,7 +3,7 @@ import { Container, Header, Card, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const RelatedStyle = styled.div`
+const RelatedPostsList = styled( Container )`
 background: #fff;
 border: 1px solid #D3D3D3;
 padding: 10px;
@@ -11,12 +11,12 @@ overflow-x: scroll;
 white-space: nowrap;
 `;
 
-const RelatedPostStyle = styled.div`
-display: inline-block;
-margin: 0px 10px;
+const RelatedPost = styled( Card )`
+display: inline-block !important;
+margin: 0px 7px !important;
 `;
 
-const RelatedHeaderStyle = styled.div`
+const RelatedPostHeader = styled( Card.Header )`
 font-size: 17.5px;
 overflow: hidden;
 white-space: normal;
@@ -24,11 +24,26 @@ height: 55px;
 font-weight: bold;
 `;
 
-const RelatedTitleStyle = styled.div`
+const RelatedTitleStyle = styled( Container )`
 margin-top: 50px;
 text-align: center;
 padding: 7px 0px 2px 0px;
 background: #005b96;
+`;
+
+const RelatedHeader = styled( Header )`
+	font-family: Roboto Condensed, sans-serif !important;
+	font-size: 23px !important;
+`;
+
+const RelatedImage = styled( Image )`
+height: 163.13px;
+width: 290px;
+`;
+
+const RelatedPostTitle = styled( Link )`
+	font-family: Roboto, sans-serif;
+	font-size: 18px;
 `;
 
 class RelatedPosts extends React.Component {
@@ -40,55 +55,34 @@ class RelatedPosts extends React.Component {
 	render() {
 		return (
 			<div>
-				<Container>
-					<RelatedTitleStyle>
-						<Header
-							style={{
-								fontFamily: "Roboto Condensed, sans-serif", fontSize: "24px"
-							}}
-						>
-							Related Posts
-						</Header>
-					</RelatedTitleStyle>
-				</Container>
+				<RelatedTitleStyle>
+					<RelatedHeader>Related Posts</RelatedHeader>
+				</RelatedTitleStyle>
 
-				<Container>
-					<RelatedStyle>
-						{this.props.relatedPosts.map( (post, index ) =>
+				<RelatedPostsList>
+					{this.props.relatedPosts.map( (post, index ) =>
+						<RelatedPost key={post._id}>
+							<Link to={`/post/${post.slug}`}>
+								<RelatedImage
+									src={require(
+										"../public/uploads/" + post.image
+									)}
+									alt="Related post"
+								/>
+							</Link>
 
-							<RelatedPostStyle key={post._id}>
-								<Card>
-									<Link to={`/post/${post.slug}`}>
-										<Image
-											style={{
-												height: "163.13px",
-												width: "290px"
-											}}
-											src={require(
-												"../public/uploads/" + post.image
-											)}
-											alt="Related post"
-										/>
-									</Link>
-									<Card.Content>
-										<RelatedHeaderStyle>
-											<Card.Header>
-												<Link
-													to={`/post/${post.slug}`}
-													style={{
-														fontFamily: "Roboto, sans-serif"
-													}}
-												>
-													{post.title}
-												</Link>
-											</Card.Header>
-										</RelatedHeaderStyle>
-									</Card.Content>
-								</Card>
-							</RelatedPostStyle>
-						)}
-					</RelatedStyle>
-				</Container>
+							<Card.Content>
+								<RelatedPostHeader>
+									<RelatedPostTitle
+										to={`/post/${post.slug}`}
+									>
+										{post.title}
+									</RelatedPostTitle>
+								</RelatedPostHeader>
+							</Card.Content>
+						</RelatedPost>
+					)}
+				</RelatedPostsList>
 			</div>
 		);
 	}

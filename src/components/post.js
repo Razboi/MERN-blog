@@ -84,6 +84,10 @@ const EvenPost = styled( Grid )`
 }
 `;
 
+const PostTitle = styled.h2`
+	font-family: Roboto Condensed, sans-serif;
+`;
+
 /* for mantaining state you need a class that extends the React.Component.
 on this class the props requires this. because props its no longer being passed,
 so the only way to access it is as a property of the Post object. */
@@ -91,18 +95,18 @@ class Post extends React.Component {
 	render() {
 		var post = null;
 		var isOdd = false;
-		// if the post is a multiple of 3 (or is the first post) set post to a grid element
+		// if the post is odd (or it's the first) and isn't a small device
+		// set post to a grid element
 		// else set the post to a card element
 		if ( ( this.props.index ) % 3 === 0 && !this.props.smallDevice ) {
 			isOdd = true;
 			post = (
 					<EvenPost>
-
 						<Grid.Column width={10}>
 							<Link to={`/post/${this.props.slug}`}>
-								<h2 style={{ fontFamily: "Roboto Condensed, sans-serif" }}>
+								<PostTitle>
 									{ this.props.title }
-								</h2>
+								</PostTitle>
 							</Link>
 							<OddDescription>
 								{this.props.introduction}
@@ -133,9 +137,9 @@ class Post extends React.Component {
 					<Card.Content>
 						<Link to={`/post/${this.props.slug}`}>
 							<Card.Header>
-								<h2 style={{ fontFamily: "Roboto Condensed, sans-serif" }}>
+								<PostTitle>
 									{ this.props.title }
-								</h2>
+								</PostTitle>
 							</Card.Header>
 						</Link>
 						<Description>

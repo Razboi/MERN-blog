@@ -150,6 +150,7 @@ onChange = (e) => {
 						postDetails={true}
 						image="images/loader-image.png"
 						lock={this.state.navbarLock}
+						toggleSidebar={this.toggleSidebar}
 						/>
 					}
 

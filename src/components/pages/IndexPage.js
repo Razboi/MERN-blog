@@ -47,16 +47,20 @@ margin: 0px;
 margin-left: 4px;
 `;
 
-const NextPageButton = styled.span`
+const NextPageButton = styled( Button )`
 position: absolute;
 bottom: 0px;
 right: 0px;
+margin: 0px !important;
+border-radius: 0px !important;
 `;
 
-const PrevPageButton = styled.span`
+const PrevPageButton = styled( Button )`
 position: absolute;
 bottom: 0px;
 left: 0px;
+margin: 0px !important;
+border-radius: 0px !important;
 `;
 
 const BackArrow = styled.div`
@@ -289,30 +293,18 @@ class IndexPage extends React.Component {
 								/>
 							)
 							}
-							<NextPageButton>
-								<Button
-									disabled={this.state.pageNum === this.state.maxPages}
-									primary
-									style={{
-										margin: "0px",
-										borderRadius: "0px"
-									}}
-									onClick={this.nextPage}
-									content="Next Page"
-								/>
-							</NextPageButton>
-							<PrevPageButton>
-								<Button
-									primary
-									disabled={this.state.pageNum === 1}
-									style={{
-										margin: "0px",
-										borderRadius: "0px"
-									}}
-									onClick={this.prevPage}
-									content="Previous Page"
-								/>
-							</PrevPageButton>
+							<NextPageButton
+								disabled={this.state.pageNum === this.state.maxPages}
+								primary
+								onClick={this.nextPage}
+								content="Next Page"
+							/>
+							<PrevPageButton
+								primary
+								disabled={this.state.pageNum === 1}
+								onClick={this.prevPage}
+								content="Previous Page"
+							/>
 						</PostContainer>
 					</Index>
 

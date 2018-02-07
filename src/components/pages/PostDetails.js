@@ -143,6 +143,7 @@ class PostDetails extends React.Component {
 						postDetails={true}
 						image="images/loader-image.png"
 						lock={this.state.navbarLock}
+						toggleSidebar={this.toggleSidebar}
 						/>
 					}
 
