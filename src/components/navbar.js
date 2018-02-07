@@ -63,6 +63,16 @@ margin-right: 8px;
 cursor: pointer;
 `;
 
+const Navbar = styled.nav`
+background-color: rgba(0, 0, 0, 0.7);
+padding: 10px;
+width: 100%;
+z-index: 3;
+position: ${props => props.lock ? "fixed" : "absolute"};
+top: ${props => props.lock && "0px"};
+bottom: ${props => !props.lock && "0px"};
+`;
+
 class NavBar extends React.Component {
 	constructor() {
 		super();
@@ -137,17 +147,8 @@ class NavBar extends React.Component {
 	};
 
 	render() {
-		const Navbar = styled.nav`
-		background-color: rgba(0, 0, 0, 0.7);
-		padding: 10px;
-		width: 100%;
-		z-index: 3;
-		position: ${props => this.props.lock ? "fixed" : "absolute"};
-		top: ${props => this.props.lock && "0px"};
-		bottom: ${props => !this.props.lock && "0px"};
-		`;
 		return (
-			<Navbar id="navbar">
+			<Navbar id="navbar" lock={this.props.lock}>
 				<LeftMenu>
 					<Category onClick={() => this.filterCategory( "pentesting" )}>
 						Pentesting

@@ -1,63 +1,59 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import {Icon} from "semantic-ui-react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { logout } from "../actions/auth";
 import axios from "axios";
-import Radium from "radium";
-import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
-const styles = {
-	sidebarWrapper: {
-		display: "none",
-		"@media screen and (max-width: 900px)": {
-			"backgroundColor": "rgba(0, 0, 0, 0.825)",
-			"padding": "10px",
-			"height": "100%",
-			"width": "30%",
-			zIndex: "4",
-			position: "fixed",
-			top: "0px",
-			overflow: "hidden",
-			display: "block"
-		},
-		"@media screen and (max-width: 600px)": {
-			"width": "50%"
-		},
-		"@media screen and (max-width: 365px)": {
-			"width": "60%"
-		}
-	},
-	categories: {
-		color: "#fff",
-		marginLeft: "25px",
-		fontSize: "19px",
-		fontWeight: "bold",
-		cursor: "pointer",
-		fontFamily: "Roboto, sans-serif",
-		display: "block",
-		paddingTop: "15px"
-	},
-	buttons: {
-		color: "#fff",
-		cursor: "pointer"
-	},
-	sidebarList: {
-		marginTop: "40px"
-	},
-	adminOptions: {
-		marginLeft: "25px",
-		paddingTop: "15px"
-	}
+const SidebarWrapper = styled.nav`
+display: none;
+@media (max-width: 900px) {
+	background-color: rgba(0, 0, 0, 0.825);
+	padding: 10px;
+	height: 100%;
+	width: 30%;
+	z-index: 4;
+	position: fixed;
+	top: 0px;
+	overflow: hidden;
+	display: block;
 };
+@media (max-width: 600px) {
+	width: 50%;
+};
+@media (max-width: 365px) {
+	width: 60%;
+};
+`;
+
+const Category = styled.span`
+color: #fff;
+margin-left: 25px;
+font-size: 16px;
+font-weight: bold;
+cursor: pointer;
+font-family: Roboto, sans-serif;
+display: block;
+padding-top: 15px;
+`;
+
+const StyledIcon = styled( Icon )`
+color: #fff;
+cursor: pointer;
+`;
+
+const SidebarOptions = styled.div`
+	margin-top: 40px;
+`;
+
+const AdminOptions = styled.div`
+margin-left: 25px;
+padding-top: 15px;
+`;
 
 class SideBar extends React.Component {
-	constructor() {
-	super();
-	this.state = {
-	};
-}
 
 filterCategory = (category) => {
 	axios.get( `/api/count/category/${category}` ).then( ( response ) => {
@@ -82,48 +78,43 @@ filterCategory = (category) => {
 
 render () {
 	return (
-		<nav style={styles.sidebarWrapper}>
-			<div style={styles.sidebarList}>
-				<span
-					style={styles.categories}
+		<SidebarWrapper>
+			<SidebarOptions>
+				<Category
 					onClick={() => this.filterCategory( "pentesting" )}
 				>
 					Pentesting
-				</span>
-				<span
-					style={styles.categories}
+				</Category>
+				<Category
 					onClick={() => this.filterCategory( "linux" )}
 				>
 					Linux
-				</span>
-				<span
-					style={styles.categories}
+				</Category>
+				<Category
 					onClick={() => this.filterCategory( "programming" )}
 				>
 					Programming
-				</span>
-				<span
-					style={styles.categories}
+				</Category>
+				<Category
 					onClick={() => this.filterCategory( "raspberry" )}
 				>
 					Raspberry Pi
-				</span>
+				</Category>
 				{this.props.isAuthenticated &&
-					<div style={styles.adminOptions}>
-						<Link style={styles.buttons} to="/new-post">
-							<Icon name="write square" size="large" />
+					<AdminOptions>
+						<Link to="/new-post">
+							<StyledIcon name="write square" size="large" />
 						</Link>
 
-						<Icon
-							style={styles.buttons}
+						<StyledIcon
 							onClick={this.props.logout}
 							name="sign out"
 							size="large"
 						/>
-					</div>
+					</AdminOptions>
 				}
-			</div>
-		</nav>
+			</SidebarOptions>
+		</SidebarWrapper>
 	);
 }
 }
@@ -142,4 +133,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default withRouter( connect( mapStateToProps, { logout })( Radium( SideBar ) ) );
+export default withRouter( connect( mapStateToProps, { logout })( SideBar ) );

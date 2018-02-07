@@ -5,7 +5,6 @@ import HeaderComponent from "../header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {Button, Icon } from "semantic-ui-react";
-import Radium from "radium";
 import SideBar from "../sidebar";
 import styled from "styled-components";
 import TopButton from "../topButton";
@@ -340,4 +339,4 @@ function mapStateToProps( state ) {
 	};
 }
 
-export default connect( mapStateToProps )( Radium( IndexPage ) );
+export default connect( mapStateToProps )( IndexPage );

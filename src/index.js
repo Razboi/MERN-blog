@@ -5,7 +5,6 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { StyleRoot } from "radium";
 import App from "./App";
 import "semantic-ui-css/semantic.min.css";
 import rootReducer from "./rootReducer";
@@ -22,12 +21,10 @@ if ( localStorage.loginJWT ) {
 }
 
 ReactDOM.render(
-	<StyleRoot>
 		<BrowserRouter>
 			<Provider store={store}>
 				<Route component={App} />
 			</Provider>
-		</BrowserRouter>
-	</StyleRoot>,
+		</BrowserRouter>,
 	document.getElementById("root")
 );
