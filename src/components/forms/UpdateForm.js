@@ -20,7 +20,7 @@ margin: 20px auto;
 `;
 
 class UpdateForm extends React.Component {
-
+// send the data to the update route
 	onSubmit = (e) => {
 		e.preventDefault();
 		var updatePath = "/api/post/" + this.props.postInfo._id;

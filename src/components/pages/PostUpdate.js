@@ -81,14 +81,6 @@ class PostUpdates extends React.Component {
 		}).catch( err => console.log( err ) );
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if ( nextProps.location.pathname !== this.props.location.pathname ) {
-			axios.get("/api/post/" + nextProps.match.params.slug ).then( ( response ) => {
-				this.setState({ postInfo: response.data });
-			}).catch( err => console.log( err ) );
-		}
-	}
-
 	componentDidMount() {
 		window.addEventListener("scroll", this.handleScroll );
 		axios.get("/api/post/" + this.props.match.params.slug ).then( ( response ) => {
@@ -100,6 +92,7 @@ class PostUpdates extends React.Component {
 		window.removeEventListener("scroll", this.handleScroll );
 	}
 
+// call the route for deleting the record on the DB
 	onDelete = (e) => {
 	e.preventDefault();
 	axios.delete("/api/post/" + this.state.postInfo._id ).then( ( response ) => {
@@ -107,6 +100,7 @@ class PostUpdates extends React.Component {
 	}).catch( err => console.log( err ) );
 };
 
+// update the state
 onChange = (e) => {
 	const state = this.state.postInfo;
 	state[ e.target.name ] = e.target.value;

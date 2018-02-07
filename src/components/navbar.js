@@ -81,21 +81,28 @@ class NavBar extends React.Component {
 			count: undefined
 		};
 	}
+
+	// on load set the search state to the prop
 	componentWillMount() {
 		if ( this.props.search ) {
 			this.setState({ search: this.props.search });
 		}
 	}
 
+// filter by keywords
 	onSubmit = (e) => {
 		e.preventDefault();
+		// if search is empty call clearSearch on index
 		if ( this.state.search === "") {
 			this.props.clearSearch();
+		// else get the number of posts returned and the posts
 		} else {
 			axios.get("/api/count/search/" + this.state.search ).then( ( response ) => {
 				this.setState({ count: response.data[ 0 ] });
 			}).catch( err => console.log( err ) );
 			axios.get( `/api/search/${this.state.search}/1` ).then( (res) => {
+				// if there is a renderSearch on props (means is the index page) use it
+				// else (means is another page) redirect to index passing the filtered posts
 				this.props.renderSearch ?
 				this.props.renderSearch( res.data, undefined, this.state.count, this.state.search )
 				:
@@ -119,17 +126,23 @@ class NavBar extends React.Component {
 		this.setState( state );
 	};
 
+// if the search keyword changed update the state
 	componentDidUpdate(prevProps, prevState) {
 		if ( this.props.search !== prevProps.search ) {
 			this.setState({ search: this.props.search });
 		}
 	}
 
+// filter by category
 	filterCategory = (category) => {
+		// count the number of filtered posts
 		axios.get( `/api/count/category/${category}` ).then( ( response ) => {
 			this.setState({ count: response.data[ 0 ] });
 		}).catch( err => console.log( err ) );
+		// get the filtered posts
 		axios.get( `/api/category/${category}/1` ).then( (res) => {
+			// if there is a renderSearch on props (means is the index page) use it
+			// else (means is another page) redirect to index passing the filtered posts
 			this.props.renderSearch ?
 			this.props.renderSearch( res.data, category, this.state.count, "" )
 			:

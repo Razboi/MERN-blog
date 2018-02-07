@@ -54,12 +54,16 @@ padding-top: 15px;
 `;
 
 class SideBar extends React.Component {
-
+// filter by category
 filterCategory = (category) => {
+	// count the number of filtered posts
 	axios.get( `/api/count/category/${category}` ).then( ( response ) => {
 		this.setState({ count: response.data[ 0 ] });
 	}).catch( err => console.log( err ) );
+	// get the filtered posts
 	axios.get( `/api/category/${category}/1` ).then( (res) => {
+		// if there is a renderSearch on props (means is the index page) use it
+		// else (means is another page) redirect to index passing the filtered posts
 		this.props.renderSearch ?
 		this.props.renderSearch( res.data, category, this.state.count, "" )
 		:

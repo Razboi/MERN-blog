@@ -37,6 +37,7 @@ class LoginForm extends React.Component {
 		};
 	}
 
+// update state
 	onChange = (e) => {
 		const state = this.state;
 		state[ e.target.name ] = e.target.value;
@@ -45,6 +46,7 @@ class LoginForm extends React.Component {
 		});
 	};
 
+// send the data
 	onSubmit = (e) => {
 		e.preventDefault();
 		// reset errors every time the form is submitted
@@ -61,6 +63,7 @@ class LoginForm extends React.Component {
 		}
 	};
 
+// check that isn't blank
 	validate = () => {
 		// reset errors
 		this.setState({ errors: false, blankError: false });
@@ -85,6 +88,7 @@ class LoginForm extends React.Component {
 					encType="multipart/form-data"
 					onSubmit={this.onSubmit}
 				>
+					{/* if there are errors show the error message */}
 					{ blankError ?
 						<ErrorMessage
 							error

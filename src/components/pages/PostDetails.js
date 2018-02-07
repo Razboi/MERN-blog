@@ -10,7 +10,7 @@ import styled from "styled-components";
 import RelatedPosts from "../relatedPosts.js";
 import TopButton from "../topButton";
 
-
+// styles
 const ContainerWrapper = styled.div`
 padding: 80px 5%;
 max-width: 858px;
@@ -68,6 +68,7 @@ class PostDetails extends React.Component {
 		this.handleScroll = this.handleScroll.bind( this );
 	}
 
+// get posts with the same categories
 	getRelated = () => {
 		var categories = this.state.postInfo.categories;
 		axios.get( `/api/category/${categories}/1` )
@@ -76,6 +77,7 @@ class PostDetails extends React.Component {
 		}).catch( err => console.log( err ) );
 	};
 
+// go to top and get the info of the post
 	componentWillMount() {
 		this.goTop();
 		axios.get("/api/post/" + this.props.match.params.slug ).then( ( response ) => {
@@ -83,12 +85,14 @@ class PostDetails extends React.Component {
 		}).catch( err => console.log( err ) );
 	}
 
+// on update (different post) if the categories aren't the same, get the new related
 	componentDidUpdate(prevProps, prevState) {
 		if ( prevState.postInfo.categories !== this.state.postInfo.categories ) {
 			this.getRelated();
 		}
 	}
 
+// if the new props location isn't the same (different post) go to top and get the new info
 	componentWillReceiveProps(nextProps) {
 		if ( nextProps.location.pathname !== this.props.location.pathname ) {
 			this.goTop();
@@ -98,6 +102,7 @@ class PostDetails extends React.Component {
 		}
 	}
 
+// listen for scrolls
 	componentDidMount() {
 		window.addEventListener("scroll", this.handleScroll );
 	}
@@ -115,22 +120,32 @@ class PostDetails extends React.Component {
 		}
 	}
 
+// go to the top of the page
 	goTop = () => {
 		window.scrollTo( 0, 0 );
 	};
 
+// show or hide the sidebar
 	toggleSidebar = () => {
 		this.setState({ sidebar: !this.state.sidebar });
 	};
 
+// used for hiding the sidebar when clicked away
+	handleClickOutsideSidebar = () => {
+		if ( this.state.sidebar ) {
+			this.setState({ sidebar: false });
+		}
+	};
+
 	render() {
 		return (
-				<div>
-					{this.state.sidebar &&
-						<SideBar
-							postDetails={true}
-						/>
-					}
+			<div>
+				{this.state.sidebar &&
+					<SideBar
+						postDetails={true}
+					/>
+				}
+				<div onClick={this.handleClickOutsideSidebar}>
 					{/* if there is no image state, pass a loader image to the header */}
 					{ this.state.postInfo.image ?
 						<HeaderComponent
@@ -171,12 +186,13 @@ class PostDetails extends React.Component {
 						/>
 					</PostWrapper>
 
-					{this.state.navbarLock &&
-						<TopButton
-							goTop={this.goTop}
-						/>
-					}
 				</div>
+				{this.state.navbarLock &&
+					<TopButton
+						goTop={this.goTop}
+					/>
+				}
+			</div>
 		);
 	}
 }
@@ -185,10 +201,12 @@ PostDetails.propTypes = {
 	isAuthenticated: PropTypes.bool.isRequired
 };
 
+// redux state to props
 function mapStateToProps ( state ) {
 	return {
 		isAuthenticated: !!state.user.token
 	};
 }
 
+// export and connect for getting redux state
 export default connect( mapStateToProps )( PostDetails );

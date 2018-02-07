@@ -2,13 +2,12 @@ import React from "react";
 import Post from "../post";
 import axios from "axios";
 import HeaderComponent from "../header";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import {Button, Icon } from "semantic-ui-react";
 import SideBar from "../sidebar";
 import styled from "styled-components";
 import TopButton from "../topButton";
 
+// Styles
 const Index = styled.div`
 padding: 30px 0px;
 display: flex;
@@ -72,8 +71,6 @@ z-index: 2;
 font-size: 22px;
 `;
 
-// if you need to use any lifecycle events or set any state you should use class.
-// Otherwise a function can be used for a simpler syntax
 class IndexPage extends React.Component {
 	constructor() {
 		super();
@@ -101,6 +98,11 @@ class IndexPage extends React.Component {
 		}).catch( err => console.log( err ) );
 	};
 
+// this will be called on each update if there are filtered posts. (get more)
+// the initial filter to get the posts is done on the navbar
+ // If there's a search keyword it will call the search route
+// else it will call the category route
+// in both cases will pass the page number to calculate posts to skip
 	getSearchPosts = () => {
 		if ( this.state.search ) {
 			axios.get( `/api/search/${this.state.search}/${this.state.pageNum}` )
@@ -124,6 +126,7 @@ class IndexPage extends React.Component {
 	};
 
 // when te user scrolls call the handleScroll function
+// and when the window resizes call onWindowResize
 	componentDidMount() {
 		window.addEventListener("scroll", this.handleScroll );
 		window.addEventListener("resize", this.onWindowResize );
@@ -143,6 +146,7 @@ class IndexPage extends React.Component {
 		}
 	}
 
+// if the window size is less than 1200px set smallDevice to true
 	onWindowResize() {
 		if ( window.matchMedia("(max-width: 1200px)").matches ) {
 			this.setState({ smallDevice: true });
@@ -151,6 +155,7 @@ class IndexPage extends React.Component {
 		}
 	}
 
+// used for hiding the sidebar when clicked away
 	handleClickOutsideSidebar = () => {
 		if ( this.state.sidebar ) {
 			this.setState({ sidebar: false });
@@ -159,9 +164,11 @@ class IndexPage extends React.Component {
 
 // before mounting get the location state, posts and posts count
 	componentWillMount() {
+		// if there aren't posts being passed on location, get the latest posts
 		if ( !this.props.location.state || !this.props.location.state.searchPosts ) {
 			this.getTotalPosts();
 			this.getPosts();
+		// else set the data being passed to the state and clear the history
 		} else {
 			this.setState({
 				searchPosts: this.props.location.state.searchPosts,
@@ -171,6 +178,7 @@ class IndexPage extends React.Component {
 			});
 			this.props.history.replace({ state: {} });
 		}
+		// go top and make sure the device type is ok
 		this.goTop();
 		this.onWindowResize();
 	}
@@ -184,7 +192,7 @@ class IndexPage extends React.Component {
 		}
 	}
 
-// set the search results as searchPosts
+// set the filter results as searchPosts and the search/category keywords
 	renderSearch = (posts, category, count, search) => {
 		this.goTop();
 		this.clearState();
@@ -196,12 +204,12 @@ class IndexPage extends React.Component {
 		});
 	};
 
-// clear searchPosts, category and pageNum
+// clear searchPosts, category and pageNum states
 	clearState = () => {
 		this.setState({ searchPosts: "", category: "", pageNum: 1, search: "" });
 	};
 
-// clear search results and get posts count/maxPage
+// clear old search results, get latest posts and set count/maxPage
 	clearSearch = () => {
 		this.clearState();
 		this.getTotalPosts();
@@ -222,10 +230,12 @@ class IndexPage extends React.Component {
 		}
 	};
 
+// scroll to the top of the page
 	goTop = () => {
 		window.scrollTo( 0, 0 );
 	};
 
+// show or hide the sidebar
 	toggleSidebar = () => {
 		this.setState({ sidebar: !this.state.sidebar });
 	};
@@ -268,6 +278,9 @@ class IndexPage extends React.Component {
 						}
 
 						<PostContainer>
+							{/*
+								if there are filtered posts show them, else show the latest posts
+							*/}
 							{this.state.searchPosts.length > 0 ?
 								this.state.searchPosts.map( (post, index) =>
 									<Post
@@ -320,15 +333,4 @@ class IndexPage extends React.Component {
 	}
 };
 
-IndexPage.propTypes = {
-	isAuthenticated: PropTypes.bool.isRequired
-};
-
-function mapStateToProps( state ) {
-	return {
-		isAuthenticated: !!state.user.token,
-		username: state.user.username
-	};
-}
-
-export default connect( mapStateToProps )( IndexPage );
+export default IndexPage;
