@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { Icon } from "semantic-ui-react";
+import { Icon, Button } from "semantic-ui-react";
 import HeaderComponent from "../header";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -95,8 +95,10 @@ class PostUpdates extends React.Component {
 // call the route for deleting the record on the DB
 	onDelete = (e) => {
 	e.preventDefault();
-	axios.delete("/api/post/" + this.state.postInfo._id ).then( ( response ) => {
+	axios.delete("/api/post/" + this.state.postInfo._id, { data: { token: localStorage.loginJWT } })
+	.then( ( response ) => {
 		console.log( response );
+		this.props.history.push("/");
 	}).catch( err => console.log( err ) );
 };
 
@@ -161,7 +163,7 @@ onChange = (e) => {
 							<Content
 								dangerouslySetInnerHTML={{ __html: this.state.postInfo.content }}
 							/>
-
+							<Button color="red" onClick={this.onDelete}>Delete me</Button>
 						</ContainerWrapper>
 						<UpdateForm onChange={this.onChange} postInfo={this.state.postInfo}/>
 					</PostWrapper>

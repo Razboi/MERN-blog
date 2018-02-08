@@ -26,8 +26,10 @@ class UpdateForm extends React.Component {
 		var updatePath = "/api/post/" + this.props.postInfo._id;
 		// to upload an image with multer its important to pass a formData
 		var formData = new FormData( document.getElementById("updateForm") );
+		formData.append("image", this.props.postInfo.image );
+		formData.append("token", localStorage.loginJWT );
 		axios.put( updatePath, formData ).then( ( response ) => {
-			console.log("updated", response );
+			console.log( response );
 		}).catch( err => console.log( err ) );
 	};
 
